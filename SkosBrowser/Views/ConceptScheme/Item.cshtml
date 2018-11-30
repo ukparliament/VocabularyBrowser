@@ -1,0 +1,18 @@
+﻿@model ConceptScheme
+@{
+    ViewData["Title"] = Model.PrefLabel.Single();
+}
+
+@Html.ActionLink("tree", "Tree")
+
+<fieldset>
+    <label>top concepts</label>
+    <ul>
+        @foreach (var concept in Model.HasTopConcept)
+        {
+            <li>
+                @Html.ActionLink(concept.PrefLabel.Single(), "Item", "Concept", new { id = concept.Id })
+            </li>
+        }
+    </ul>
+</fieldset>

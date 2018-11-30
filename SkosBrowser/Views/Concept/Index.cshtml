@@ -1,0 +1,15 @@
+﻿@model Skos
+@{
+    ViewData["Title"] = "concepts";
+}
+
+<fieldset>
+    <ul>
+        @foreach (var concept in Model.Concepts)
+        {
+            <li>
+                @Html.ActionLink(concept.PrefLabel.Single(), "Item", "Concept", new { id = concept.Id })
+            </li>
+        }
+    </ul>
+</fieldset>

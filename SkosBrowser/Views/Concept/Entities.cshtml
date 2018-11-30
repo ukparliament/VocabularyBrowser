@@ -1,0 +1,38 @@
+﻿@using SolrNet
+@model SolrQueryResults<SolrResult>
+
+<ol class="list--block">
+    @foreach (var result in Model)
+    {
+        var link = (string)null;
+        if (!(result.ExternalLocation is null))
+        {
+            link = result.ExternalLocation.First();
+        }
+
+        <li>
+            <div class="card">
+                <div class="card__details">
+                    <h2>
+                        @if (string.IsNullOrWhiteSpace(link))
+                        {
+                            @result.Title
+                        }
+                        else
+                        {
+                            <a href="@link">@result.Title</a>
+                        }
+                    </h2>
+                    <ul class="list--inline">
+                        @foreach (var contentType in result.ContentTypes)
+                        {
+                            <li>
+                                @Html.ActionLink($"content type: {contentType.PrefLabel.Single()}", "Item", "Concept", new { id = contentType.Id }, new { @class = "hint theme--grey-4" })
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </li>
+    }
+</ol>

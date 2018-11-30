@@ -1,0 +1,13 @@
+﻿@model ConceptScheme
+@{
+    ViewData["Title"] = Model.PrefLabel.Single();
+}
+
+<div onload="console.log('a');">
+    <label for="toggle">expand all</label>
+    <input type="checkbox" id="toggle" onchange="document.querySelectorAll('details').forEach(d => d.open = this.checked)" />
+</div>
+@foreach (var concept in Model.HasTopConcept)
+{
+    <partial name="ConceptNode" model="concept" />
+}

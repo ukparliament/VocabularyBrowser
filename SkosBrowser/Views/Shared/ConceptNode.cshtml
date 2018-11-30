@@ -1,0 +1,18 @@
+﻿@model Concept
+
+@if (Model.Narrower.Any())
+{
+    <details>
+        <summary>@Html.ActionLink(Model.PrefLabel.Single(), "Item", "Concept", new { id = Model.Id })</summary>
+        @foreach (var child in Model.Narrower)
+        {
+            <partial name="ConceptNode" model="child" />
+        }
+    </details>
+}
+else
+{
+    <div>
+        @Html.ActionLink(Model.PrefLabel.Single(), "Item", "Concept", new { id = Model.Id })
+    </div>
+}
