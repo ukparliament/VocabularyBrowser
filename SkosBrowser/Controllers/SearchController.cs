@@ -4,8 +4,15 @@
     using Microsoft.AspNetCore.Mvc;
     using VDS.RDF.Dynamic;
 
-    public class SearchController : BaseController
+    public class SearchController : Controller
     {
+        private readonly VocabularyService vocabularyService;
+
+        public SearchController(VocabularyService vocabularyService)
+        {
+            this.vocabularyService = vocabularyService;
+        }
+
         [Route("search")]
         public ActionResult Query(string q)
         {
@@ -71,7 +78,7 @@ WHERE {
 }
 ";
 
-            return this.View(new DynamicGraph(this.Execute(sparql, q), subjectBaseUri: new Uri("urn:")));
+            return this.View(new DynamicGraph(this.vocabularyService.Execute(sparql, q), subjectBaseUri: new Uri("urn:")));
         }
     }
 }

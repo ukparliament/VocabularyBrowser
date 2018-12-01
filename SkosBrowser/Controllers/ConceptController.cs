@@ -10,13 +10,15 @@
     using VDS.RDF;
     using VDS.RDF.Writing.Formatting;
 
-    public class ConceptController : BaseController
+    public class ConceptController : Controller
     {
         private readonly ISolrOperations<SolrResult> solr;
+        private readonly VocabularyService vocabularyService;
 
-        public ConceptController(ISolrOperations<SolrResult> solr)
+        public ConceptController(ISolrOperations<SolrResult> solr,VocabularyService vocabularyService)
         {
             this.solr = solr;
+            this.vocabularyService = vocabularyService;
         }
 
         [Route("concepts")]
@@ -42,7 +44,7 @@ WHERE {
 ORDER BY ?prefLabel
 ";
 
-            return this.View(new Skos(this.Execute(sparql)));
+            return this.View(new Skos(this.vocabularyService.Execute(sparql)));
         }
 
         [Route("concepts/{id}")]
@@ -141,7 +143,7 @@ WHERE {
 ORDER BY ?narrowerPrefLabel
 ";
 
-            var graph = new Skos(this.Execute(sparql, new Uri(Program.BaseUri, id)));
+            var graph = new Skos(this.vocabularyService.Execute(sparql, new Uri(Program.BaseUri, id)));
             return this.View(graph.Concepts.Single(c => c.Id == id));
         }
 
@@ -198,7 +200,7 @@ WHERE {
 }
 ";
 
-            return new Skos(this.Execute(SetUris(sparql, ids)));
+            return new Skos(this.vocabularyService.Execute(SetUris(sparql, ids)));
         }
 
         private static string SetUris(string sparql, IEnumerable<string> ids)

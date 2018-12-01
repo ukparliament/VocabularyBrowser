@@ -4,8 +4,15 @@
     using System.Linq;
     using Microsoft.AspNetCore.Mvc;
 
-    public class CollectionController : BaseController
+    public class CollectionController : Controller
     {
+        private readonly VocabularyService vocabularyService;
+
+        public CollectionController(VocabularyService vocabularyService)
+        {
+            this.vocabularyService = vocabularyService;
+        }
+
         [Route("collections")]
         public ActionResult Index()
         {
@@ -30,7 +37,7 @@ WHERE {
 ORDER BY ?prefLabel
 ";
 
-            return this.View(new Skos(this.Execute(sparql)));
+            return this.View(new Skos(this.vocabularyService.Execute(sparql)));
         }
 
         [Route("collections/{id}")]
@@ -107,7 +114,7 @@ WHERE {
 ORDER BY ?conceptPrefLabel
 ";
 
-            var skos = new Skos(this.Execute(sparql, new Uri(Program.BaseUri, id)));
+            var skos = new Skos(this.vocabularyService.Execute(sparql, new Uri(Program.BaseUri, id)));
             var collection = skos.Collections.SingleOrDefault(c => c.Id == id);
                 
             if (collection is null)
