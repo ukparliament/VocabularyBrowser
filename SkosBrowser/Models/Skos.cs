@@ -2,14 +2,13 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using VDS.RDF;
     using VDS.RDF.Dynamic;
     using VDS.RDF.Skos;
 
     public class Skos : DynamicGraph
     {
-        public Skos(IGraph graph) : base(graph) { }
+        public Skos(IGraph graph, Uri subjectBaseUri = null) : base(graph, subjectBaseUri) { }
 
         public ICollection<ConceptScheme> ConceptSchemes => new DynamicSubjectCollection<ConceptScheme>("rdf:type", this[SkosHelper.ConceptScheme] as DynamicNode);
 

@@ -1,111 +1,126 @@
 ﻿@model Concept
+
 @{
-    ViewData["Title"] = Model.PrefLabel.Single();
+    var label = Model.PrefLabel.Single();
+    ViewData["Title"] = Localizer["Title", Localizer["SubTitle"], label];
 }
 
-@Html.ActionLink("entities", "Entities", new { id = Model.Id })
+<div class="section--primary">
+    <div class="container">
+        <small>@Localizer["SubTitle"]</small>
+        <h1>@label</h1>
+        <aside>
+            @Html.ActionLink(Localizer["Entities"].Value, "Entities", new { id = Model.Id })
+        </aside>
+    </div>
+</div>
 
-@if (Model.AltLabel.Any())
-{
-    <details>
-        <summary>alt labels</summary>
-        <ul>
-            @foreach (var label in Model.AltLabel)
-            {
-                <li>@label</li>
-            }
-        </ul>
-    </details>
-}
-@if (Model.ContainsKey("definition"))
-{
-    <details>
-        <summary>definition</summary>
-        <ul>
-            @foreach (var definition in Model.Definition)
-            {
-                <li>@definition</li>
-            }
-        </ul>
-    </details>
-}
-@if (Model.HistoryNote.Any())
-{
-    <details>
-        <summary>history note</summary>
-        <ul>
-            @foreach (var historyNote in Model.HistoryNote)
-            {
-                <li>@historyNote</li>
-            }
-        </ul>
-    </details>
-}
-@if (Model.Notation.Any())
-{
-    <details>
-        <summary>notation</summary>
-        <ul>
-            @foreach (var notation in Model.Notation)
-            {
-                <li>@notation</li>
-            }
-        </ul>
-    </details>
-}
-@if (Model.InScheme.Any())
-{
-    <details>
-        <summary>schemes</summary>
-        <ul>
-            @foreach (var scheme in Model.InScheme)
-            {
-                <li>
-                    @Html.ActionLink(scheme.PrefLabel.Single(), "Item", "ConceptScheme", new { id = scheme.Id })
-                </li>
-            }
-        </ul>
-    </details>
-}
-@if (Model.Parent.Any())
-{
-    <details>
-        <summary>collections</summary>
-        <ul>
-            @foreach (var parent in Model.Parent)
-            {
-                <li>
-                    @Html.ActionLink(parent.PrefLabel.Single(), "Item", "Collection", new { id = parent.Id })
-                </li>
-            }
-        </ul>
-    </details>
-}
-@if (Model.Broader.Any())
-{
-    <details>
-        <summary>broaders</summary>
-        <ul>
-            @foreach (var broader in Model.Broader)
-            {
-                <li>
-                    @Html.ActionLink(broader.PrefLabel.Single(), "Item", "Concept", new { id = broader.Id })
-                </li>
-            }
-        </ul>
-    </details>
-}
-@if (Model.Narrower.Any())
-{
-    <details>
-        <summary>narrowers</summary>
-        <ul>
-            @foreach (var narrower in Model.Narrower)
-            {
-                <li>
-                    @Html.ActionLink(narrower.PrefLabel.Single(), "Item", "Concept", new { id = narrower.Id })
-                </li>
-            }
-        </ul>
-    </details>
-}
+<section id="content">
+    <div class="container">
+        <h2>@Localizer["Properties"]</h2>
+        @if (Model.AltLabel.Any())
+        {
+            <details>
+                <summary>@Localizer["AltLabel"]</summary>
+                <ul>
+                    @foreach (var altLabel in Model.AltLabel)
+                    {
+                        <li>@altLabel</li>
+                    }
+                </ul>
+            </details>
+        }
+        @if (Model.Definition.Any())
+        {
+            <details>
+                <summary>@Localizer["Definition"]</summary>
+                <ul>
+                    @foreach (var definition in Model.Definition)
+                    {
+                        <li>@definition</li>
+                    }
+                </ul>
+            </details>
+        }
+        @if (Model.HistoryNote.Any())
+        {
+            <details>
+                <summary>@Localizer["HistoryNote"]</summary>
+                <ul>
+                    @foreach (var historyNote in Model.HistoryNote)
+                    {
+                        <li>@historyNote</li>
+                    }
+                </ul>
+            </details>
+        }
+        @if (Model.Notation.Any())
+        {
+            <details>
+                <summary>@Localizer["Notation"]</summary>
+                <ul>
+                    @foreach (var notation in Model.Notation)
+                    {
+                        <li>@notation</li>
+                    }
+                </ul>
+            </details>
+        }
+        @if (Model.InScheme.Any())
+        {
+            <details>
+                <summary>@Localizer["InScheme"]</summary>
+                <ul>
+                    @foreach (var scheme in Model.InScheme)
+                    {
+                        <li>
+                            @Html.ActionLink(scheme.PrefLabel.Single(), "Item", "ConceptScheme", new { id = scheme.Id })
+                        </li>
+                    }
+                </ul>
+            </details>
+        }
+        @if (Model.Parent.Any())
+        {
+            <details>
+                <summary>@Localizer["Parent"]</summary>
+                <ul>
+                    @foreach (var parent in Model.Parent)
+                    {
+                        <li>
+                            @Html.ActionLink(parent.PrefLabel.Single(), "Item", "Collection", new { id = parent.Id })
+                        </li>
+                    }
+                </ul>
+            </details>
+        }
+        @if (Model.Broader.Any())
+        {
+            <details>
+                <summary>@Localizer["Broader"]</summary>
+                <ul>
+                    @foreach (var broader in Model.Broader)
+                    {
+                        <li>
+                            @Html.ActionLink(broader.PrefLabel.Single(), "Item", "Concept", new { id = broader.Id })
+                        </li>
+                    }
+                </ul>
+            </details>
+        }
+        @if (Model.Narrower.Any())
+        {
+            <details>
+                <summary>@Localizer["Narrower"]</summary>
+                <ul>
+                    @foreach (var narrower in Model.Narrower)
+                    {
+                        <li>
+                            @Html.ActionLink(narrower.PrefLabel.Single(), "Item", "Concept", new { id = narrower.Id })
+                        </li>
+                    }
+                </ul>
+            </details>
+        }
+    </div>
+</section>

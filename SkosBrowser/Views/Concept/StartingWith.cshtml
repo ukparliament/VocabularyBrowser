@@ -1,0 +1,53 @@
+﻿@model Skos
+
+@{
+    var prefix = ((string)ViewData["prefix"]);
+    ViewData["Title"] = Localizer["Title", Localizer["SubTitle"], prefix];
+}
+
+<div class="section--primary">
+    <div class="container">
+        <small>@Localizer["SubTitle"]</small>
+        <h1>@prefix</h1>
+        <nav class="navigation--letter">
+            <ol>
+                @foreach (var initial in ((dynamic)Model).initials.value.OrderBy((Func<dynamic, dynamic>)(x => x.Value)))
+                {
+                    @if (initial.Value as string == prefix.ToUpper())
+                    {
+                        <li class="active">
+                            <span>
+                                @initial.Value
+                            </span>
+                        </li>
+                    }
+                    else
+                    {
+                        <li>
+                            @Html.ActionLink(initial.Value as string, "StartingWith", new { prefix = initial.Value })
+                        </li>
+                    }
+                }
+            </ol>
+        </nav>
+    </div>
+</div>
+
+<section id="content">
+    <div class="container">
+        <ol class="list--block">
+            @foreach (var concept in Model.Concepts.OrderBy(x => x.PrefLabel.Single()))
+            {
+                <li>
+                    <div class="card">
+                        <div class="card__details">
+                            <h2>
+                                @Html.ActionLink(concept.PrefLabel.Single(), "Item", "Concept", new { id = concept.Id })
+                            </h2>
+                        </div>
+                    </div>
+                </li>
+            }
+        </ol>
+    </div>
+</section>

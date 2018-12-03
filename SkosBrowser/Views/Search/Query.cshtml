@@ -1,47 +1,59 @@
 ﻿@{
     var query = Model.query.value.Single();
     ViewData["Query"] = query;
-    ViewData["Title"] = $"search: {query}";
+    ViewData["Title"] = Localizer["Title", Localizer["SubTitle"], query];
 }
 
-@if (Model.TryGetValue("result", out dynamic results))
-{
-    var mapping = new Dictionary<string, string> { { "http://www.w3.org/2004/02/skos/core#Concept", "Concept" }, { "http://www.w3.org/2004/02/skos/core#ConceptScheme", "ConceptScheme" }, { "http://www.w3.org/2004/02/skos/core#Collection", "Collection" } };
+<div class="section--primary">
+    <div class="container">
+        <small>@Localizer["SubTitle"]</small>
+        <h1>@query</h1>
+    </div>
+</div>
 
-    <ol class="list--block">
-        @foreach (var result in results.member)
+<section id="content">
+    <div class="container">
+
+        @if (Model.TryGetValue("result", out dynamic results))
         {
-            var controller = mapping[result.type.Single().ToString()];
-            <li>
-                <div class="card">
-                    <div class="card__details">
-                        <h2>
-                            @Html.ActionLink(result.label.Single() as string, "Item", controller as string, new { id = new SkosResource(result).Id })
-                        </h2>
-                        <ul class="list--inline">
-                            <li>
-                                @Html.ActionLink($"type: {controller}", "Index", controller as string, null, new { @class = "hint theme--grey-4" })
-                            </li>
-                            @foreach (var collection in result.collection)
-                            {
-                                <li>
-                                    @Html.ActionLink($"collection: {collection.label.Single()}", "Item", "Collection", new { id = new SkosResource(collection).Id }, new { @class = "hint theme--grey-4" })
-                                </li>
-                            }
-                            @foreach (var scheme in result.scheme)
-                            {
-                                <li>
-                                    @Html.ActionLink($"scheme: {scheme.label.Single()}", "Item", "ConceptScheme", new { id = new SkosResource(scheme).Id }, new { @class = "hint theme--grey-4" })
-                                </li>
-                            }
-                        </ul>
-                    </div>
-                </div>
-            </li>
+            var mapping = new Dictionary<string, string> { { "http://www.w3.org/2004/02/skos/core#Concept", "Concept" }, { "http://www.w3.org/2004/02/skos/core#ConceptScheme", "ConceptScheme" }, { "http://www.w3.org/2004/02/skos/core#Collection", "Collection" } };
+
+            <ol class="list--block">
+                @foreach (var result in results.member)
+                {
+                    var controller = mapping[result.type.Single().ToString()];
+                    <li>
+                        <div class="card">
+                            <div class="card__details">
+                                <h2>
+                                    @Html.ActionLink(result.label.Single() as string, "Item", controller as string, new { id = new SkosResource(result).Id })
+                                </h2>
+                                <ul class="list--inline">
+                                    <li>
+                                        @Html.ActionLink($"type: {controller}", "Index", controller as string, null, new { @class = "hint theme--grey-4" })
+                                    </li>
+                                    @foreach (var collection in result.collection)
+                                    {
+                                        <li>
+                                            @Html.ActionLink($"collection: {collection.label.Single()}", "Item", "Collection", new { id = new SkosResource(collection).Id }, new { @class = "hint theme--grey-4" })
+                                        </li>
+                                    }
+                                    @foreach (var scheme in result.scheme)
+                                    {
+                                        <li>
+                                            @Html.ActionLink($"scheme: {scheme.label.Single()}", "Item", "ConceptScheme", new { id = new SkosResource(scheme).Id }, new { @class = "hint theme--grey-4" })
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+                }
+            </ol>
         }
-    </ol>
-}
-else
-{
-    <span>no results</span>
-}
+        else
+        {
+            <span>no results</span>
+        }
+    </div>
+</section>

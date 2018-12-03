@@ -1,18 +1,34 @@
 ﻿@model ConceptScheme
 @{
-    ViewData["Title"] = Model.PrefLabel.Single();
+    var label = Model.PrefLabel.Single();
+    var subTitle = Localizer["SubTitle"];
+    ViewData["Title"] = Localizer["Title", subTitle, label];
 }
-
-@Html.ActionLink("tree", "Tree")
-
-<fieldset>
-    <label>top concepts</label>
-    <ul>
-        @foreach (var concept in Model.HasTopConcept)
-        {
-            <li>
-                @Html.ActionLink(concept.PrefLabel.Single(), "Item", "Concept", new { id = concept.Id })
-            </li>
-        }
-    </ul>
-</fieldset>
+<div class="section--primary">
+    <div class="container">
+        <small>@subTitle</small>
+        <h1>@label</h1>
+        <aside>
+            @Html.ActionLink(Localizer["Tree"].Value, "Tree")
+        </aside>
+    </div>
+</div>
+<section id="content">
+    <div class="container">
+        <h2>@Localizer["TopConcepts"]</h2>
+        <ol class="list--block">
+            @foreach (var concept in Model.HasTopConcept)
+            {
+                <li>
+                    <div class="card">
+                        <div class="card__details">
+                            <h2>
+                                @Html.ActionLink(concept.PrefLabel.Single(), "Item", "Concept", new { id = concept.Id })
+                            </h2>
+                        </div>
+                    </div>
+                </li>
+            }
+        </ol>
+    </div>
+</section>

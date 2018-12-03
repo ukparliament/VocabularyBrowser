@@ -1,47 +1,62 @@
 ﻿@model Collection
+
 @{
-    ViewData["Title"] = Model.PrefLabel.Single();
+    var label = Model.PrefLabel.Single();
+    ViewData["Title"] = Localizer["Title", Localizer["SubTitle"], label];
 }
 
-@if (Model.Parent.Any())
-{
-    <details>
-        <summary>parents</summary>
-        <ul>
-            @foreach (var parent in Model.Parent)
-            {
-                <li>
-                    @Html.ActionLink(parent.PrefLabel.Single(), "Item", "Collection", new { id = parent.Id })
-                </li>
-            }
-        </ul>
-    </details>
-}
-@if (Model.Child.Any())
-{
-    <details>
-        <summary>children</summary>
-        <ul>
-            @foreach (var child in Model.Child)
-            {
-                <li>
-                    @Html.ActionLink(child.PrefLabel.Single(), "Item", "Collection", new { id = child.Id })
-                </li>
-            }
-        </ul>
-    </details>
-}
-@if (Model.Member.Any())
-{
-    <details>
-        <summary>concepts</summary>
-        <ul>
-            @foreach (var concept in Model.Member)
-            {
-                <li>
-                    @Html.ActionLink(concept.PrefLabel.Single(), "Item", "Concept", new { id = concept.Id })
-                </li>
-            }
-        </ul>
-    </details>
-}
+<div class="section--primary">
+    <div class="container">
+        <small>@Localizer["SubTitle"]</small>
+        <h1>@label</h1>
+    </div>
+</div>
+
+<section id="content">
+    <div class="container">
+        <h2>@Localizer["Properties"]</h2>
+
+        @if (Model.Parent.Any())
+        {
+            <details>
+                <summary>@Localizer["MemberOf"]</summary>
+                <ul>
+                    @foreach (var parent in Model.Parent)
+                    {
+                        <li>
+                            @Html.ActionLink(parent.PrefLabel.Single(), "Item", "Collection", new { id = parent.Id })
+                        </li>
+                    }
+                </ul>
+            </details>
+        }
+        @if (Model.Child.Any())
+        {
+            <details>
+                <summary>@Localizer["MemberCollections"]</summary>
+                <ul>
+                    @foreach (var child in Model.Child)
+                    {
+                        <li>
+                            @Html.ActionLink(child.PrefLabel.Single(), "Item", "Collection", new { id = child.Id })
+                        </li>
+                    }
+                </ul>
+            </details>
+        }
+        @if (Model.Member.Any())
+        {
+            <details>
+                <summary>@Localizer["MemberConcepts"]</summary>
+                <ul>
+                    @foreach (var concept in Model.Member)
+                    {
+                        <li>
+                            @Html.ActionLink(concept.PrefLabel.Single(), "Item", "Concept", new { id = concept.Id })
+                        </li>
+                    }
+                </ul>
+            </details>
+        }
+    </div>
+</section>

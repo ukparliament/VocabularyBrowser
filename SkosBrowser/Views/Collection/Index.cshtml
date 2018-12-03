@@ -1,15 +1,30 @@
 ﻿@model Skos
+
 @{
-    ViewData["Title"] = "collections";
+    ViewData["Title"] = Localizer["Title"];
 }
 
-<fieldset>
-    <ul>
-        @foreach (var collection in Model.Collections)
-        {
-            <li>
-                @Html.ActionLink(collection.PrefLabel.Single(), "Item", "Collection", new { id = collection.Id })
-            </li>
-        }
-    </ul>
-</fieldset>
+<div class="section--primary">
+    <div class="container">
+        <h1>@Localizer["Title"]</h1>
+    </div>
+</div>
+
+<section id="content">
+    <div class="container">
+        <ol class="list--block">
+            @foreach (var collection in Model.Collections)
+            {
+                <li>
+                    <div class="card">
+                        <div class="card__details">
+                            <h2>
+                                @Html.ActionLink(collection.PrefLabel.Single(), "Item", "Collection", new { id = collection.Id })
+                            </h2>
+                        </div>
+                    </div>
+                </li>
+            }
+        </ol>
+    </div>
+</section>

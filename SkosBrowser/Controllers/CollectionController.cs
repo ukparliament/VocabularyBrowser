@@ -4,6 +4,7 @@
     using System.Linq;
     using Microsoft.AspNetCore.Mvc;
 
+    [Route("collections")]
     public class CollectionController : Controller
     {
         private readonly VocabularyService vocabularyService;
@@ -13,7 +14,7 @@
             this.vocabularyService = vocabularyService;
         }
 
-        [Route("collections")]
+        [HttpGet]
         public ActionResult Index()
         {
             var sparql = @"
@@ -40,7 +41,7 @@ ORDER BY ?prefLabel
             return this.View(new Skos(this.vocabularyService.Execute(sparql)));
         }
 
-        [Route("collections/{id}")]
+        [HttpGet("{id}")]
         public ActionResult Item(string id)
         {
             var sparql = @"
@@ -116,7 +117,7 @@ ORDER BY ?conceptPrefLabel
 
             var skos = new Skos(this.vocabularyService.Execute(sparql, new Uri(Program.BaseUri, id)));
             var collection = skos.Collections.SingleOrDefault(c => c.Id == id);
-                
+
             if (collection is null)
             {
                 return NotFound();

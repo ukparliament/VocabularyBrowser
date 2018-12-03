@@ -17,8 +17,9 @@
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddLocalization(options => options.ResourcesPath = "Resources");
             services.AddSingleton<VocabularyService>();
-            services.AddMvc();
+            services.AddMvc().AddViewLocalization();
             services.AddSolrNet(this.solrNetUrl);
         }
 

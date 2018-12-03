@@ -4,6 +4,7 @@
     using Microsoft.AspNetCore.Mvc;
     using VDS.RDF.Dynamic;
 
+    [Route("search")]
     public class SearchController : Controller
     {
         private readonly VocabularyService vocabularyService;
@@ -13,7 +14,7 @@
             this.vocabularyService = vocabularyService;
         }
 
-        [Route("search")]
+        [HttpGet]
         public ActionResult Query(string q)
         {
             var sparql = @"

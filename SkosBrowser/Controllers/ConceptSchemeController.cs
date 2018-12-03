@@ -6,6 +6,7 @@
     using Microsoft.AspNetCore.Mvc;
     using VDS.RDF;
 
+    [Route("schemes")]
     public class ConceptSchemeController : Controller
     {
         private readonly VocabularyService vocabularyService;
@@ -15,7 +16,7 @@
             this.vocabularyService = vocabularyService;
         }
 
-        [Route("schemes")]
+        [HttpGet]
         public ActionResult Index()
         {
             var sparql = @"
@@ -41,7 +42,7 @@ ORDER BY ?prefLabel
             return this.View(new Skos(this.vocabularyService.Execute(sparql)));
         }
 
-        [Route("schemes/{id}")]
+        [HttpGet("{id}")]
         public ActionResult Item(string id)
         {
             var sparql = @"
@@ -83,7 +84,7 @@ ORDER BY ?conceptPrefLabel
             return this.View(graph.ConceptSchemes.Single(cs => cs.Id == id));
         }
 
-        [Route("schemes/{id}/tree")]
+        [HttpGet("{id}/tree")]
         public ActionResult Tree(string id)
         {
             var sparql = @"

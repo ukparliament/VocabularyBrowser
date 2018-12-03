@@ -1,15 +1,19 @@
-﻿@model Skos
-@{
-    ViewData["Title"] = "concepts";
+﻿@{
+    ViewData["Title"] = Localizer["Title"];
 }
 
-<fieldset>
-    <ul>
-        @foreach (var concept in Model.Concepts)
-        {
-            <li>
-                @Html.ActionLink(concept.PrefLabel.Single(), "Item", "Concept", new { id = concept.Id })
-            </li>
-        }
-    </ul>
-</fieldset>
+<div class="section--primary">
+    <div class="container">
+        <h1>@Localizer["Title"]</h1>
+        <nav class="navigation--letter">
+            <ol>
+                @foreach (var initial in Model.initials.value.OrderBy((Func<dynamic, dynamic>)(x => x.Value)))
+                {
+                    <li>
+                        @Html.ActionLink(initial.Value as string, "StartingWith", new { prefix = initial.Value })
+                    </li>
+                }
+            </ol>
+        </nav>
+    </div>
+</div>

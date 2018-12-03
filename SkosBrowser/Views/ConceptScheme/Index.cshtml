@@ -1,14 +1,27 @@
 ﻿@model Skos
-@{
-    ViewData["Title"] = "schemes";
-}
-<fieldset>
-    <ul>
-        @foreach (var scheme in Model.ConceptSchemes)
-        {
-            <li>
-                @Html.ActionLink(scheme.PrefLabel.Single(), "Item", "ConceptScheme", new { id = scheme.Id })
-            </li>
-        }
-    </ul>
-</fieldset>
+
+@{ ViewData["Title"] = Localizer["Title"]; }
+
+<div class="section--primary">
+    <div class="container">
+        <h1>@Localizer["Title"]</h1>
+    </div>
+</div>
+<section id="content">
+    <div class="container">
+        <ol class="list--block">
+            @foreach (var scheme in Model.ConceptSchemes)
+            {
+                <li>
+                    <div class="card">
+                        <div class="card__details">
+                            <h2>
+                                @Html.ActionLink(scheme.PrefLabel.Single(), "Item", "ConceptScheme", new { id = scheme.Id })
+                            </h2>
+                        </div>
+                    </div>
+                </li>
+            }
+        </ol>
+    </div>
+</section>

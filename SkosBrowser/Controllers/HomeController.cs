@@ -2,9 +2,9 @@
 {
     using Microsoft.AspNetCore.Mvc;
 
+    [Route("")]
     public class HomeController : Controller
     {
-        [Route("")]
         public ActionResult Index()
         {
             return this.View();

@@ -1,13 +1,26 @@
 ﻿@model ConceptScheme
 @{
-    ViewData["Title"] = Model.PrefLabel.Single();
+    var label = Model.PrefLabel.Single();
+    var subTitle = Localizer["SubTitle"];
+    ViewData["Title"] = Localizer["Title", subTitle, label];
 }
-
-<div onload="console.log('a');">
-    <label for="toggle">expand all</label>
-    <input type="checkbox" id="toggle" onchange="document.querySelectorAll('details').forEach(d => d.open = this.checked)" />
+<div class="section--primary">
+    <div class="container">
+        <small>@subTitle</small>
+        <h1>@label</h1>
+        <aside>
+            @Html.ActionLink(Localizer["Details"].Value, "Item", new { id = Model.Id })
+        </aside>
+    </div>
 </div>
-@foreach (var concept in Model.HasTopConcept)
-{
-    <partial name="ConceptNode" model="concept" />
-}
+<section id="content">
+    <div class="container">
+        <aside>
+            <button onclick="this.dataset.open = this.dataset.open == 'true' ? 'false' : 'true'; document.querySelectorAll('details').forEach(d => d.open = this.dataset.open == 'true')">@Localizer["Toggle"]</button>
+        </aside>
+        @foreach (var concept in Model.HasTopConcept)
+        {
+            <partial name="ConceptNode" model="concept" />
+        }
+    </div>
+</section>

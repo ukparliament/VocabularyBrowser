@@ -8,46 +8,92 @@
     using SolrNet;
     using SolrNet.Commands.Parameters;
     using VDS.RDF;
+    using VDS.RDF.Dynamic;
+    using VDS.RDF.Query;
     using VDS.RDF.Writing.Formatting;
 
+    [Route("concepts")]
     public class ConceptController : Controller
     {
         private readonly ISolrOperations<SolrResult> solr;
         private readonly VocabularyService vocabularyService;
 
-        public ConceptController(ISolrOperations<SolrResult> solr,VocabularyService vocabularyService)
+        public ConceptController(ISolrOperations<SolrResult> solr, VocabularyService vocabularyService)
         {
             this.solr = solr;
             this.vocabularyService = vocabularyService;
         }
 
-        [Route("concepts")]
+        [HttpGet]
         public ActionResult Index()
         {
             var sparql = @"
-PREFIX : <urn:>
 PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
 
 CONSTRUCT {
+    <urn:initials> <urn:value> ?firstLetter .
+}
+WHERE {
+    SELECT DISTINCT ?firstLetter
+    WHERE {
+        ?concept
+            a skos:Concept ;
+            skos:prefLabel ?prefLabel ;
+        .
+
+        BIND(UCASE(SUBSTR(?prefLabel, 1, 1)) AS ?firstLetter)
+    }
+}
+";
+
+            return this.View(new DynamicGraph(this.vocabularyService.Execute(sparql), new Uri("urn:")));
+        }
+
+        [HttpGet("startingwith/{prefix}")]
+        public ActionResult StartingWith(string prefix)
+        {
+            var sparql = @"
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+
+CONSTRUCT {
+    <urn:initials> <urn:value> ?firstLetter .
     ?concept
         a skos:Concept ;
         skos:prefLabel ?label .
 }
 WHERE {
-    ?concept
-        a skos:Concept ;
-        skos:prefLabel ?prefLabel ;
-    .
+    {
+        SELECT DISTINCT ?firstLetter
+        WHERE {
+            ?concept
+                a skos:Concept ;
+                skos:prefLabel ?prefLabel ;
+            .
 
-    BIND(STR(?prefLabel) AS ?label)
+            BIND(UCASE(SUBSTR(?prefLabel, 1, 1)) AS ?firstLetter)
+        }
+    } 
+    UNION
+    {
+        ?concept
+            a skos:Concept ;
+            skos:prefLabel ?prefLabel ;
+        .
+
+        FILTER(STRSTARTS(UCASE(?prefLabel), UCASE(@prefix)))
+        BIND(STR(?prefLabel) AS ?label)
+    }
 }
-ORDER BY ?prefLabel
 ";
 
-            return this.View(new Skos(this.vocabularyService.Execute(sparql)));
+            var pp = new SparqlParameterizedString(sparql);
+            pp.SetLiteral("prefix", prefix);
+
+            this.ViewData["prefix"] = prefix;
+            return this.View(new Skos(this.vocabularyService.Execute(pp), new Uri("urn:")));
         }
 
-        [Route("concepts/{id}")]
+        [HttpGet("{id}")]
         public ActionResult Item(string id)
         {
             var sparql = @"
@@ -147,7 +193,7 @@ ORDER BY ?narrowerPrefLabel
             return this.View(graph.Concepts.Single(c => c.Id == id));
         }
 
-        [Route("concepts/{id}/entities")]
+        [HttpGet("{id}/entities")]
         public async Task<ActionResult> Entities(string id)
         {
             var results = await this.solr.QueryAsync(
@@ -174,6 +220,8 @@ ORDER BY ?narrowerPrefLabel
                             concept.Id == contentTypeId)));
             }
 
+            this.ViewData["label"] = GetConcepts(new[] { id }).Concepts.Single().PrefLabel.Single();
+            this.ViewData["id"] = id;
             return this.View(results);
         }
 
