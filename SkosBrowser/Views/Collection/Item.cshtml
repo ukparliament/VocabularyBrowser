@@ -21,7 +21,7 @@
             <details>
                 <summary>@Localizer["MemberOf"]</summary>
                 <ul>
-                    @foreach (var parent in Model.Parent)
+                    @foreach (var parent in Model.Parent.OrderBy(x => x.PrefLabel.Single()))
                     {
                         <li>
                             @Html.ActionLink(parent.PrefLabel.Single(), "Item", "Collection", new { id = parent.Id })
@@ -35,7 +35,7 @@
             <details>
                 <summary>@Localizer["MemberCollections"]</summary>
                 <ul>
-                    @foreach (var child in Model.Child)
+                    @foreach (var child in Model.Child.OrderBy(x => x.PrefLabel.Single()))
                     {
                         <li>
                             @Html.ActionLink(child.PrefLabel.Single(), "Item", "Collection", new { id = child.Id })
@@ -49,7 +49,7 @@
             <details>
                 <summary>@Localizer["MemberConcepts"]</summary>
                 <ul>
-                    @foreach (var concept in Model.Member)
+                    @foreach (var concept in Model.Member.OrderBy(x => x.PrefLabel.Single()))
                     {
                         <li>
                             @Html.ActionLink(concept.PrefLabel.Single(), "Item", "Concept", new { id = concept.Id })

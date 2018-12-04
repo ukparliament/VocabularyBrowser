@@ -17,7 +17,7 @@
     <div class="container">
         <h2>@Localizer["TopConcepts"]</h2>
         <ol class="list--block">
-            @foreach (var concept in Model.HasTopConcept)
+            @foreach (var concept in Model.HasTopConcept.OrderBy(x => x.PrefLabel.Single()))
             {
                 <li>
                     <div class="card">

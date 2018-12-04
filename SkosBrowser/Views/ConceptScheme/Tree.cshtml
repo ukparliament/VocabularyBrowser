@@ -18,7 +18,7 @@
         <aside>
             <button onclick="this.dataset.open = this.dataset.open == 'true' ? 'false' : 'true'; document.querySelectorAll('details').forEach(d => d.open = this.dataset.open == 'true')">@Localizer["Toggle"]</button>
         </aside>
-        @foreach (var concept in Model.HasTopConcept)
+        @foreach (var concept in Model.HasTopConcept.OrderBy(concept => concept.PrefLabel.Single()))
         {
             <partial name="ConceptNode" model="concept" />
         }

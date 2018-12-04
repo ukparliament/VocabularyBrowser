@@ -36,7 +36,6 @@ WHERE {
 
     BIND(STR(?prefLabel) AS ?label)
 }
-ORDER BY ?prefLabel
 ";
 
             return this.View(new Skos(this.vocabularyService.Execute(sparql)));
@@ -77,7 +76,6 @@ WHERE {
     BIND(STR(?schemePrefLabel) AS ?schemeLabel)
     BIND(STR(?conceptPrefLabel) AS ?conceptLabel)
 }
-ORDER BY ?conceptPrefLabel
 ";
 
             var graph = new Skos(this.vocabularyService.Execute(sparql, new Uri(Program.BaseUri, id)));
@@ -133,7 +131,6 @@ WHERE {
         }
     }
 }
-ORDER BY ?conceptPrefLabel
 ";
 
             var g = new Skos(this.vocabularyService.Execute(sparql, new Uri(Program.BaseUri, id)));

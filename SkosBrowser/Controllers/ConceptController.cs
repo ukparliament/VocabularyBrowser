@@ -186,7 +186,6 @@ WHERE {
         BIND(STR(?parentPrefLabel) AS ?parentLabel)
     }
 }
-ORDER BY ?narrowerPrefLabel
 ";
 
             var graph = new Skos(this.vocabularyService.Execute(sparql, new Uri(Program.BaseUri, id)));

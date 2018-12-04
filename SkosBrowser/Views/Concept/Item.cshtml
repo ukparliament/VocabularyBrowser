@@ -23,7 +23,7 @@
             <details>
                 <summary>@Localizer["AltLabel"]</summary>
                 <ul>
-                    @foreach (var altLabel in Model.AltLabel)
+                    @foreach (var altLabel in Model.AltLabel.OrderBy(x => x))
                     {
                         <li>@altLabel</li>
                     }
@@ -35,7 +35,7 @@
             <details>
                 <summary>@Localizer["Definition"]</summary>
                 <ul>
-                    @foreach (var definition in Model.Definition)
+                    @foreach (var definition in Model.Definition.OrderBy(x => x))
                     {
                         <li>@definition</li>
                     }
@@ -47,7 +47,7 @@
             <details>
                 <summary>@Localizer["HistoryNote"]</summary>
                 <ul>
-                    @foreach (var historyNote in Model.HistoryNote)
+                    @foreach (var historyNote in Model.HistoryNote.OrderBy(x => x))
                     {
                         <li>@historyNote</li>
                     }
@@ -59,7 +59,7 @@
             <details>
                 <summary>@Localizer["Notation"]</summary>
                 <ul>
-                    @foreach (var notation in Model.Notation)
+                    @foreach (var notation in Model.Notation.OrderBy(x => x))
                     {
                         <li>@notation</li>
                     }
@@ -71,7 +71,7 @@
             <details>
                 <summary>@Localizer["InScheme"]</summary>
                 <ul>
-                    @foreach (var scheme in Model.InScheme)
+                    @foreach (var scheme in Model.InScheme.OrderBy(x => x.PrefLabel.Single()))
                     {
                         <li>
                             @Html.ActionLink(scheme.PrefLabel.Single(), "Item", "ConceptScheme", new { id = scheme.Id })
@@ -85,7 +85,7 @@
             <details>
                 <summary>@Localizer["Parent"]</summary>
                 <ul>
-                    @foreach (var parent in Model.Parent)
+                    @foreach (var parent in Model.Parent.OrderBy(x => x.PrefLabel.Single()))
                     {
                         <li>
                             @Html.ActionLink(parent.PrefLabel.Single(), "Item", "Collection", new { id = parent.Id })
@@ -99,7 +99,7 @@
             <details>
                 <summary>@Localizer["Broader"]</summary>
                 <ul>
-                    @foreach (var broader in Model.Broader)
+                    @foreach (var broader in Model.Broader.OrderBy(x => x.PrefLabel.Single()))
                     {
                         <li>
                             @Html.ActionLink(broader.PrefLabel.Single(), "Item", "Concept", new { id = broader.Id })
@@ -113,7 +113,7 @@
             <details>
                 <summary>@Localizer["Narrower"]</summary>
                 <ul>
-                    @foreach (var narrower in Model.Narrower)
+                    @foreach (var narrower in Model.Narrower.OrderBy(x => x.PrefLabel.Single()))
                     {
                         <li>
                             @Html.ActionLink(narrower.PrefLabel.Single(), "Item", "Concept", new { id = narrower.Id })

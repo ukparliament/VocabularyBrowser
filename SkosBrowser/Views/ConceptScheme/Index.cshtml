@@ -10,7 +10,7 @@
 <section id="content">
     <div class="container">
         <ol class="list--block">
-            @foreach (var scheme in Model.ConceptSchemes)
+            @foreach (var scheme in Model.ConceptSchemes.OrderBy(x => x.PrefLabel.Single()))
             {
                 <li>
                     <div class="card">

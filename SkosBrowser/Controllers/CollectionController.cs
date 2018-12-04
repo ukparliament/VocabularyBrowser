@@ -35,7 +35,6 @@ WHERE {
 
     BIND(STR(?prefLabel) AS ?label)
 }
-ORDER BY ?prefLabel
 ";
 
             return this.View(new Skos(this.vocabularyService.Execute(sparql)));
@@ -112,7 +111,6 @@ WHERE {
         BIND(STR(?childPrefLabel) AS ?childLabel)
     }
 }
-ORDER BY ?conceptPrefLabel
 ";
 
             var skos = new Skos(this.vocabularyService.Execute(sparql, new Uri(Program.BaseUri, id)));

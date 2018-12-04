@@ -4,7 +4,7 @@
 {
     <details>
         <summary>@Html.ActionLink(Model.PrefLabel.Single(), "Item", "Concept", new { id = Model.Id })</summary>
-        @foreach (var child in Model.Narrower)
+        @foreach (var child in Model.Narrower.OrderBy(concept => concept.PrefLabel.Single()))
         {
             <partial name="ConceptNode" model="child" />
         }
