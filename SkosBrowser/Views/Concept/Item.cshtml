@@ -9,9 +9,12 @@
     <div class="container">
         <small>@Localizer["SubTitle"]</small>
         <h1>@label</h1>
-        <aside>
-            @Html.ActionLink(Localizer["Entities"].Value, "Entities", new { id = Model.Id })
-        </aside>
+        <dl class="meta">
+            <dt>Tagged</dt>
+            <dd>
+                @Html.ActionLink(Localizer["Entities"].Value, "Entities", new { id = Model.Id })
+            </dd>
+        </dl>
     </div>
 </div>
 

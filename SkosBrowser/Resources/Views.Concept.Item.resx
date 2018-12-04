@@ -127,7 +127,7 @@
     <value>Definitions</value>
   </data>
   <data name="Entities" xml:space="preserve">
-    <value>Entities</value>
+    <value>entities</value>
   </data>
   <data name="HistoryNote" xml:space="preserve">
     <value>History notes</value>
