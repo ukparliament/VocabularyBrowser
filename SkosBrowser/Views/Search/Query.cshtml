@@ -1,6 +1,5 @@
 ﻿@{
-    var query = Model.query.value.Single();
-    ViewData["Query"] = query;
+    var query = ViewData["Query"];
     ViewData["Title"] = Localizer["Title", Localizer["SubTitle"], query];
 }
 

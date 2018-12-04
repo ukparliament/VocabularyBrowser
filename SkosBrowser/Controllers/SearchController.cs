@@ -2,16 +2,20 @@
 {
     using System;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.Extensions.Configuration;
     using VDS.RDF.Dynamic;
+    using VDS.RDF.Query;
 
     [Route("search")]
     public class SearchController : Controller
     {
         private readonly VocabularyService vocabularyService;
+        private readonly string indexName;
 
-        public SearchController(VocabularyService vocabularyService)
+        public SearchController(VocabularyService vocabularyService, IConfiguration config)
         {
             this.vocabularyService = vocabularyService;
+            this.indexName = config.GetSection("SearchController")["indexName"];
         }
 
         [HttpGet]
@@ -19,13 +23,10 @@
         {
             var sparql = @"
 PREFIX : <urn:>
-PREFIX luc: <http://www.ontotext.com/owlim/lucene#>
 PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
 
 CONSTRUCT
 {
-    :query :value ?query .
-
     :result :member ?result .
 
     ?result
@@ -45,10 +46,8 @@ CONSTRUCT
 }
 FROM <http://www.ontotext.com/explicit>
 WHERE { 
-    BIND(@parameter AS ?query)
-
     OPTIONAL {
-        ?value luc:myIndex ?query . 
+        ?value @indexUri @query . 
 
         ?result
             ?p ?value ;
@@ -79,7 +78,15 @@ WHERE {
 }
 ";
 
-            return this.View(new DynamicGraph(this.vocabularyService.Execute(sparql, q), subjectBaseUri: new Uri("urn:")));
+            var indexUri = new Uri(new Uri("http://www.ontotext.com/owlim/lucene"), $"#{this.indexName}");
+
+            var pp = new SparqlParameterizedString(sparql);
+            pp.SetUri("indexUri", indexUri);
+            pp.SetLiteral("query", q);
+
+            this.ViewData["Query"] = q;
+
+            return this.View(new DynamicGraph(this.vocabularyService.Execute(pp), subjectBaseUri: new Uri("urn:")));
         }
     }
 }
