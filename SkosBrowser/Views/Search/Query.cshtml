@@ -18,7 +18,7 @@
             var mapping = new Dictionary<string, string> { { "http://www.w3.org/2004/02/skos/core#Concept", "Concept" }, { "http://www.w3.org/2004/02/skos/core#ConceptScheme", "ConceptScheme" }, { "http://www.w3.org/2004/02/skos/core#Collection", "Collection" } };
 
             <ol class="list--block">
-                @foreach (var result in results.member)
+                @foreach (var result in results.member.OrderByDescending((Func<dynamic, dynamic>)(x => x.score.Single())))
                 {
                     var controller = mapping[result.type.Single().ToString()];
                     <li>
