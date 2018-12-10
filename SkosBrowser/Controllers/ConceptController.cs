@@ -145,7 +145,11 @@ WHERE {
 
     BIND(STR(?conceptPrefLabel) AS ?conceptLabel)
 
-    OPTIONAL { ?concept skos:altLabel ?altLabel . }
+    OPTIONAL {
+        ?concept skos:altLabel ?conceptAltLabel .
+
+        BIND(STR(?conceptAltLabel) AS ?altLabel)
+    }
     OPTIONAL { ?concept skos:definition ?definition . }
     OPTIONAL { ?concept skos:historyNote ?historyNote . }
     OPTIONAL { ?concept skos:notation ?notation . }
