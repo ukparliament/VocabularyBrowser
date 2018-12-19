@@ -6,7 +6,7 @@
     using VDS.RDF.Dynamic;
     using VDS.RDF.Query;
 
-    [Route("search")]
+    [Route("vocabulary/browser/search")]
     public class SearchController : Controller
     {
         private readonly VocabularyService vocabularyService;

@@ -12,7 +12,7 @@
     using VDS.RDF.Query;
     using VDS.RDF.Writing.Formatting;
 
-    [Route("concepts")]
+    [Route("vocabulary/browser/concepts")]
     public class ConceptController : Controller
     {
         private readonly ISolrOperations<SolrResult> solr;

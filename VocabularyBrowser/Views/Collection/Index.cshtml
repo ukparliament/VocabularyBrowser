@@ -19,7 +19,7 @@
                     <div class="card">
                         <div class="card__details">
                             <h2>
-                                @Html.ActionLink(collection.PrefLabel.Single(), "Item", "Collection", new { id = collection.Id })
+                                <a asp-action="Item" asp-route-id="@collection.Id">@collection.PrefLabel.Single()</a>
                             </h2>
                         </div>
                     </div>

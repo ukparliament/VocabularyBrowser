@@ -2,7 +2,7 @@
 {
     using Microsoft.AspNetCore.Mvc;
 
-    [Route("")]
+    [Route("vocabulary/browser")]
     public class HomeController : Controller
     {
         public ActionResult Index()

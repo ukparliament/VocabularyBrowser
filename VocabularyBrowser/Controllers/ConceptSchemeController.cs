@@ -6,7 +6,7 @@
     using Microsoft.AspNetCore.Mvc;
     using VDS.RDF;
 
-    [Route("schemes")]
+    [Route("vocabulary/browser/schemes")]
     public class ConceptSchemeController : Controller
     {
         private readonly VocabularyService vocabularyService;

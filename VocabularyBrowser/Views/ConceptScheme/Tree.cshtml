@@ -13,7 +13,7 @@
         <dl class="meta">
             <dt>@Localizer["ConceptScheme"]</dt>
             <dd>
-                @Html.ActionLink(Localizer["Details"].Value, "Item", new { id = Model.Id })
+                <a asp-action="Item">@Localizer["Details"].Value</a>
             </dd>
         </dl>
     </div>

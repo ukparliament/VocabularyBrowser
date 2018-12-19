@@ -13,7 +13,7 @@
         <dl class="meta">
             <dt>Concept</dt>
             <dd>
-                @Html.ActionLink(Localizer["Details"].Value, "Item", new { id = ViewData["id"].ToString() })
+                <a asp-action="Item" asp-route-id="@ViewData["id"].ToString()">@Localizer["Details"].Value</a>
             </dd>
         </dl>
     </div>
@@ -46,9 +46,9 @@
                             <ul class="list--inline">
                                 @foreach (var contentType in result.ContentTypes)
                                 {
-                                    <li>
-                                        @Html.ActionLink($"content type: {contentType.PrefLabel.Single()}", "Item", "Concept", new { id = contentType.Id }, new { @class = "hint theme--grey-4" })
-                                    </li>
+                                <li>
+                                    <a asp-action="Item" asp-controller="Concept" asp-route-id="@contentType.Id" class="hint theme--grey-4">content type: @contentType.PrefLabel.Single()</a>
+                                </li>
                                 }
                             </ul>
                         </div>

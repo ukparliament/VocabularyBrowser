@@ -13,7 +13,7 @@
             else
             {
                 <li>
-                    @Html.ActionLink(initial as string, "StartingWith", new { prefix = initial })
+                    <a asp-action="StartingWith" asp-route-prefix="@initial">@initial</a>
                 </li>
             }
         }

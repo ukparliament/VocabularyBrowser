@@ -25,23 +25,23 @@
                         <div class="card">
                             <div class="card__details">
                                 <h2>
-                                    @Html.ActionLink(result.label.Single() as string, "Item", controller as string, new { id = new SkosResource(result).Id })
+                                    <a asp-action="Item" asp-controller="@controller" asp-route-id="@(new SkosResource(result).Id)">@result.label.Single()</a>
                                 </h2>
                                 <ul class="list--inline">
                                     <li>
-                                        @Html.ActionLink($"type: {controller}", "Index", controller as string, null, new { @class = "hint theme--grey-4" })
+                                        <a asp-action="Index" asp-controller="@controller" class="hint theme--grey-4">type: @controller</a>
                                     </li>
                                     @foreach (var collection in result.collection)
                                     {
-                                        <li>
-                                            @Html.ActionLink($"collection: {collection.label.Single()}", "Item", "Collection", new { id = new SkosResource(collection).Id }, new { @class = "hint theme--grey-4" })
-                                        </li>
+                                    <li>
+                                        <a asp-action="Item" asp-controller="Collection"  asp-route-id="@(new SkosResource(collection).Id)" class="hint theme--grey-4">collection: @collection.label.Single()</a>
+                                    </li>
                                     }
                                     @foreach (var scheme in result.scheme)
                                     {
-                                        <li>
-                                            @Html.ActionLink($"scheme: {scheme.label.Single()}", "Item", "ConceptScheme", new { id = new SkosResource(scheme).Id }, new { @class = "hint theme--grey-4" })
-                                        </li>
+                                    <li>
+                                        <a asp-action="Item" asp-controller="ConceptScheme" asp-route-id="@(new SkosResource(scheme).Id)" class="hint theme--grey-4">scheme: @scheme.label.Single()</a>
+                                    </li>
                                     }
                                 </ul>
                             </div>

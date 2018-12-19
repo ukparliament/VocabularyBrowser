@@ -4,7 +4,7 @@
     using System.Linq;
     using Microsoft.AspNetCore.Mvc;
 
-    [Route("collections")]
+    [Route("vocabulary/browser/collections")]
     public class CollectionController : Controller
     {
         private readonly VocabularyService vocabularyService;

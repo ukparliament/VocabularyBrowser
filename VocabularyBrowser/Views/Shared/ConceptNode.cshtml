@@ -3,7 +3,9 @@
 @if (Model.Narrower.Any())
 {
     <details>
-        <summary>@Html.ActionLink(Model.PrefLabel.Single(), "Item", "Concept", new { id = Model.Id })</summary>
+        <summary>
+            <a asp-action="Item" asp-controller="Concept" asp-route-id="@Model.Id">@Model.PrefLabel.Single()</a>
+        </summary>
         @foreach (var child in Model.Narrower.OrderBy(concept => concept.PrefLabel.Single()))
         {
             <partial name="ConceptNode" model="child" />
@@ -13,6 +15,6 @@
 else
 {
     <div>
-        @Html.ActionLink(Model.PrefLabel.Single(), "Item", "Concept", new { id = Model.Id })
+        <a asp-action="Item" asp-controller="Concept" asp-route-id="@Model.Id">@Model.PrefLabel.Single()</a>
     </div>
 }
