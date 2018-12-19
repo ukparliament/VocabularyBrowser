@@ -124,9 +124,12 @@
     <value>{0} - {1}</value>
   </data>
   <data name="Details" xml:space="preserve">
-    <value>Details</value>
+    <value>details</value>
   </data>
   <data name="Toggle" xml:space="preserve">
     <value>Toggle</value>
+  </data>
+  <data name="ConceptScheme" xml:space="preserve">
+    <value>Concept scheme</value>
   </data>
 </root>

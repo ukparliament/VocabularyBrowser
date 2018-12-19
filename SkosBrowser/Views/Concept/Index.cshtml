@@ -5,15 +5,6 @@
 <div class="section--primary">
     <div class="container">
         <h1>@Localizer["Title"]</h1>
-        <nav class="navigation--letter">
-            <ol>
-                @foreach (var initial in Model.initials.value.OrderBy((Func<dynamic, dynamic>)(x => x.Value)))
-                {
-                    <li>
-                        @Html.ActionLink(initial.Value as string, "StartingWith", new { prefix = initial.Value })
-                    </li>
-                }
-            </ol>
-        </nav>
+        <partial name="ConceptInitials" model="Model.initials.value" />
     </div>
 </div>

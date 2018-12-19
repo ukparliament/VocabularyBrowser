@@ -1,0 +1,21 @@
+﻿<nav class="navigation--letter">
+    <ol>
+        @foreach (var initial in Model.OrderBy((Func<dynamic, dynamic>)(x => x)))
+        {
+            @if (initial as string == ((string)ViewData["prefix"])?.ToUpper())
+            {
+                <li class="active">
+                    <span>
+                        @initial
+                    </span>
+                </li>
+            }
+            else
+            {
+                <li>
+                    @Html.ActionLink(initial as string, "StartingWith", new { prefix = initial })
+                </li>
+            }
+        }
+    </ol>
+</nav>

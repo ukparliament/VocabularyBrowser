@@ -127,6 +127,9 @@
     <value>{0} - {1}</value>
   </data>
   <data name="Tree" xml:space="preserve">
-    <value>Tree</value>
+    <value>tree</value>
+  </data>
+  <data name="Presentations" xml:space="preserve">
+    <value>Alternative view</value>
   </data>
 </root>

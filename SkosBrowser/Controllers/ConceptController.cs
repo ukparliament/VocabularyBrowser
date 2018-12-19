@@ -41,7 +41,7 @@ WHERE {
             skos:prefLabel ?prefLabel ;
         .
 
-        BIND(UCASE(SUBSTR(?prefLabel, 1, 1)) AS ?firstLetter)
+        BIND(UCASE(SUBSTR(STR(?prefLabel), 1, 1)) AS ?firstLetter)
     }
 }
 ";
@@ -70,7 +70,7 @@ WHERE {
                 skos:prefLabel ?prefLabel ;
             .
 
-            BIND(UCASE(SUBSTR(?prefLabel, 1, 1)) AS ?firstLetter)
+            BIND(UCASE(SUBSTR(STR(?prefLabel), 1, 1)) AS ?firstLetter)
         }
     } 
     UNION

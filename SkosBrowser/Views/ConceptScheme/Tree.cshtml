@@ -1,18 +1,24 @@
 ﻿@model ConceptScheme
+
 @{
     var label = Model.PrefLabel.Single();
     var subTitle = Localizer["SubTitle"];
     ViewData["Title"] = Localizer["Title", subTitle, label];
 }
+
 <div class="section--primary">
     <div class="container">
         <small>@subTitle</small>
         <h1>@label</h1>
-        <aside>
-            @Html.ActionLink(Localizer["Details"].Value, "Item", new { id = Model.Id })
-        </aside>
+        <dl class="meta">
+            <dt>@Localizer["ConceptScheme"]</dt>
+            <dd>
+                @Html.ActionLink(Localizer["Details"].Value, "Item", new { id = Model.Id })
+            </dd>
+        </dl>
     </div>
 </div>
+
 <section id="content">
     <div class="container">
         <aside>

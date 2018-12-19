@@ -10,9 +10,12 @@
     <div class="container">
         <small>@Localizer["SubTitle"]</small>
         <h1>@label</h1>
-        <aside>
-            @Html.ActionLink(Localizer["Details"].Value, "Item", new { id = ViewData["id"].ToString() })
-        </aside>
+        <dl class="meta">
+            <dt>Concept</dt>
+            <dd>
+                @Html.ActionLink(Localizer["Details"].Value, "Item", new { id = ViewData["id"].ToString() })
+            </dd>
+        </dl>
     </div>
 </div>
 
