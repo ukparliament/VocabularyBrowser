@@ -1,4 +1,4 @@
-﻿namespace WebApplication1
+﻿namespace VocabularyBrowser
 {
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;

@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28010.2050
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SkosBrowser", "SkosBrowser\SkosBrowser.csproj", "{0EB69095-2DF0-474C-9FA9-3ED9CF897143}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VocabularyBrowser", "VocabularyBrowser\VocabularyBrowser.csproj", "{0EB69095-2DF0-474C-9FA9-3ED9CF897143}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "dotNetRDF", "dotNetRDF.Dynamic\Libraries\dotNetRDF\dotNetRDF.csproj", "{99B5842E-4CBC-4CD7-9206-9AF8CFEDFF8D}"
 EndProject

@@ -1,4 +1,4 @@
-﻿namespace WebApplication1
+﻿namespace VocabularyBrowser
 {
     using System.Collections.Generic;
     using System.Linq;
