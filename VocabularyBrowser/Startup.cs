@@ -2,6 +2,7 @@
 {
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
+    using Microsoft.AspNetCore.Rewrite;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using SolrNet;
@@ -30,6 +31,7 @@
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseRewriter(new RewriteOptions().AddRedirect("^$", "vocabulary/browser"));
             app.UseMvc();
         }
     }
