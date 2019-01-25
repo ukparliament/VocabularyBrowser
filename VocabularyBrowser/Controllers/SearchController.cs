@@ -31,6 +31,13 @@ namespace VocabularyBrowser
         [HttpGet]
         public ActionResult Query(string q)
         {
+            // TODO: When this query has no result,
+            // an empty graph is returned.
+            // Newer version of GraphDB send no content type header.
+            // dotnetrdf fails to find a parser for a response without content type.
+            // Quick fix is to always have something in the result graph.
+            // Or to add a default header.
+            // Fix is to modify dnr parser selection.
             var sparql = @"
 PREFIX : <urn:>
 PREFIX luc: <http://www.ontotext.com/connectors/lucene#>
