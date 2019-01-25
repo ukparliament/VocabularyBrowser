@@ -20,10 +20,12 @@ namespace VocabularyBrowser
     public class Startup
     {
         private readonly string solrNetUrl;
+        private readonly string solrNetSubscriptionKey;
 
         public Startup(IConfiguration config)
         {
             this.solrNetUrl = config.GetSection("SolrNet")["Url"];
+            this.solrNetSubscriptionKey = config.GetSection("SolrNet")["SubscriptionKey"];
         }
 
         public void ConfigureServices(IServiceCollection services)
@@ -31,7 +33,15 @@ namespace VocabularyBrowser
             services.AddLocalization(options => options.ResourcesPath = "Resources");
             services.AddSingleton<VocabularyService>();
             services.AddMvc().AddViewLocalization();
-            services.AddSolrNet(this.solrNetUrl);
+            services.AddSolrNet(this.solrNetUrl, this.SetupSolr);
+        }
+
+        private void SetupSolr(SolrNetOptions options)
+        {
+            if (!string.IsNullOrEmpty(this.solrNetSubscriptionKey))
+            {
+                options.HttpClient.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", this.solrNetSubscriptionKey);
+            }
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
