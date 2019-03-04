@@ -27,7 +27,14 @@ namespace VocabularyBrowser
 
         internal IGraph Execute(string sparql)
         {
-            return connector.Query(sparql) as IGraph;
+            try
+            {
+                return connector.Query(sparql) as IGraph;
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
         }
 
         internal IGraph Execute(string sparql, Uri u)
