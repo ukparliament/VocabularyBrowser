@@ -18,11 +18,13 @@ namespace VocabularyBrowser
 
     public class VocabularyService : IDisposable
     {
-        private readonly SparqlConnector connector;
+        private readonly CustomSparqlConnector connector;
+        private readonly CustomSparqlRemoteEndpoint endpoint;
 
         public VocabularyService(IConfiguration config)
         {
-            this.connector = new SparqlConnector(new Uri(config.GetSection("VocabularyService")["SparqlEndpoint"]));
+            this.endpoint = new CustomSparqlRemoteEndpoint(new Uri(config.GetSection("VocabularyService")["SparqlEndpoint"]), config);
+            this.connector = new CustomSparqlConnector(this.endpoint);
         }
 
         internal IGraph Execute(string sparql)
