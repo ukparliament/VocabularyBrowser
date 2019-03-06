@@ -15,6 +15,7 @@ namespace VocabularyBrowser
     using Microsoft.Extensions.Configuration;
     using VDS.RDF.Dynamic;
     using VDS.RDF.Query;
+    using VocabularyBrowser.Models;
 
     [Route("vocabulary/browser/search")]
     public class SearchController : Controller
@@ -29,7 +30,7 @@ namespace VocabularyBrowser
         }
 
         [HttpGet]
-        public ActionResult Query(string q)
+        public ActionResult Query(SearchQuery searchQuery)
         {
             // TODO: When this query has no result,
             // an empty graph is returned.
@@ -38,13 +39,18 @@ namespace VocabularyBrowser
             // Quick fix is to always have something in the result graph.
             // Or to add a default header.
             // Fix is to modify dnr parser selection.
-            var sparql = @"
+            string sparqlFilter = "";
+            if (searchQuery.ExactMatch)
+            {
+                sparqlFilter = @"FILTER(LCASE(STR(?prefLabel)) = LCASE(@query))";
+            }
+            var sparql = $@"
 PREFIX : <urn:>
 PREFIX luc: <http://www.ontotext.com/connectors/lucene#>
 PREFIX inst: <http://www.ontotext.com/connectors/lucene/instance#>
 PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
 
-CONSTRUCT {
+CONSTRUCT {{
     :result :member ?entity .
     
     ?entity
@@ -58,12 +64,12 @@ CONSTRUCT {
     ?collection :label ?collectionLabel .
     
     ?scheme :label ?schemeLabel .
-}
+}}
 WHERE
-{
-    {
+{{
+    {{
         SELECT ?entity ?score 
-        WHERE {
+        WHERE {{
             ?search
                 a @connector ;
                 luc:query @query ;
@@ -71,8 +77,8 @@ WHERE
             .
 
             ?entity luc:score ?score .
-        }
-    }
+        }}
+    }}
 
     ?entity
         a skos:Concept ;
@@ -81,26 +87,27 @@ WHERE
 
     ?scheme skos:prefLabel ?schemePrefLabel .
 
-    OPTIONAL {
+    OPTIONAL {{
         ?collection
             skos:member ?entity ;
             skos:prefLabel ?collectionPrefLabel ;
         .
         BIND(STR(?collectionPrefLabel) AS ?collectionLabel)
-    }
+    }}
 
     BIND(STR(?prefLabel) AS ?label)
     BIND(STR(?schemePrefLabel) AS ?schemeLabel)
-}
+    {sparqlFilter}
+}}
 ";
 
             var connector = new Uri(this.luceneConnector);
 
             var pp = new SparqlParameterizedString(sparql);
             pp.SetUri("connector", connector);
-            pp.SetLiteral("query", q);
+            pp.SetLiteral("query", searchQuery.SearchText);
 
-            this.ViewData["Query"] = q;
+            this.ViewData["Query"] = searchQuery.SearchText;
 
             return this.View(new DynamicGraph(this.vocabularyService.Execute(pp), subjectBaseUri: new Uri("urn:")));
         }
