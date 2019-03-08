@@ -23,15 +23,14 @@ namespace VocabularyBrowser
     using VDS.RDF.Writing.Formatting;
 
     [Route("vocabulary/browser/concepts")]
-    public class ConceptController : Controller
+    public class ConceptController : BaseController
     {
         private readonly ISolrOperations<SolrResult> solr;
-        private readonly VocabularyService vocabularyService;
 
         public ConceptController(ISolrOperations<SolrResult> solr, VocabularyService vocabularyService)
+            : base(vocabularyService)
         {
             this.solr = solr;
-            this.vocabularyService = vocabularyService;
         }
 
         [HttpGet]
@@ -55,8 +54,8 @@ WHERE {
     }
 }
 ";
-
-            return this.View(new DynamicGraph(this.vocabularyService.Execute(sparql), new Uri("urn:")));
+            this.ViewData["SchemeList"] = this.SchemeList;
+            return this.View(new DynamicGraph(this.VocabularyService.Execute(sparql), new Uri("urn:")));
         }
 
         [HttpGet("startingwith/{prefix}")]
@@ -100,7 +99,8 @@ WHERE {
             pp.SetLiteral("prefix", prefix);
 
             this.ViewData["prefix"] = prefix;
-            return this.View(new Skos(this.vocabularyService.Execute(pp), new Uri("urn:")));
+            this.ViewData["SchemeList"] = this.SchemeList;
+            return this.View(new Skos(this.VocabularyService.Execute(pp), new Uri("urn:")));
         }
 
         [HttpGet("{id}")]
@@ -202,7 +202,8 @@ WHERE {
 }
 ";
 
-            var graph = new Skos(this.vocabularyService.Execute(sparql, new Uri(Program.BaseUri, id)));
+            var graph = new Skos(this.VocabularyService.Execute(sparql, new Uri(Program.BaseUri, id)));
+            this.ViewData["SchemeList"] = this.SchemeList;
             return this.View(graph.Concepts.Single(c => c.Id == id));
         }
 
@@ -235,6 +236,7 @@ WHERE {
 
             this.ViewData["label"] = GetConcepts(new[] { id }).Concepts.Single().PrefLabel.Single();
             this.ViewData["id"] = id;
+            this.ViewData["SchemeList"] = this.SchemeList;
             return this.View(results);
         }
 
@@ -261,7 +263,7 @@ WHERE {
 }
 ";
 
-            return new Skos(this.vocabularyService.Execute(SetUris(sparql, ids)));
+            return new Skos(this.VocabularyService.Execute(SetUris(sparql, ids)));
         }
 
         private static string SetUris(string sparql, IEnumerable<string> ids)

@@ -18,18 +18,17 @@ namespace VocabularyBrowser
     using VocabularyBrowser.Models;
 
     [Route("vocabulary/browser/search")]
-    public class SearchController : Controller
+    public class SearchController : BaseController
     {
-        private readonly VocabularyService vocabularyService;
-        private readonly string luceneConnector;
-
         public SearchController(VocabularyService vocabularyService, IConfiguration config)
+            : base(vocabularyService)
         {
-            this.vocabularyService = vocabularyService;
-            this.luceneConnector = config.GetSection("SearchController")["luceneConnector"];
+            this.LuceneConnector = config.GetSection("SearchController")["luceneConnector"];
         }
 
-        [HttpGet]
+        protected string LuceneConnector { get; set; }
+
+        [HttpPost]
         public ActionResult Query(SearchQuery searchQuery)
         {
             // TODO: When this query has no result,
@@ -39,10 +38,15 @@ namespace VocabularyBrowser
             // Quick fix is to always have something in the result graph.
             // Or to add a default header.
             // Fix is to modify dnr parser selection.
-            string sparqlFilter = "";
+            string sparqlFilter = string.Empty;
             if (searchQuery.ExactMatch)
             {
                 sparqlFilter = @"FILTER(LCASE(STR(?prefLabel)) = LCASE(@query))";
+            }
+            string schemeBind = string.Empty;
+            if (searchQuery.ConceptScheme != null && !searchQuery.ConceptScheme.Equals("-1"))
+            {
+                schemeBind = $"BIND(<{searchQuery.ConceptScheme}> as ?scheme)";
             }
             var sparql = $@"
 PREFIX : <urn:>
@@ -80,6 +84,7 @@ WHERE
         }}
     }}
 
+    {schemeBind}
     ?entity
         a skos:Concept ;
         skos:prefLabel ?prefLabel ;
@@ -101,15 +106,18 @@ WHERE
 }}
 ";
 
-            var connector = new Uri(this.luceneConnector);
+            var connector = new Uri(this.LuceneConnector);
 
             var pp = new SparqlParameterizedString(sparql);
             pp.SetUri("connector", connector);
             pp.SetLiteral("query", searchQuery.SearchText);
 
             this.ViewData["Query"] = searchQuery.SearchText;
+            this.ViewData["ExactMatch"] = searchQuery.ExactMatch;
+            this.ViewData["Scheme"] = searchQuery.ConceptScheme;
+            this.ViewData["SchemeList"] = this.SchemeList;
 
-            return this.View(new DynamicGraph(this.vocabularyService.Execute(pp), subjectBaseUri: new Uri("urn:")));
+            return this.View(new DynamicGraph(this.VocabularyService.Execute(pp), subjectBaseUri: new Uri("urn:")));
         }
     }
 }

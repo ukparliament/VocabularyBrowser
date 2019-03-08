@@ -10,21 +10,49 @@
 
 namespace VocabularyBrowser
 {
+    using System.Collections.Generic;
+    using System.Linq;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Mvc.Rendering;
+    using VDS.RDF;
 
-    [Route("vocabulary/browser")]
-    public class HomeController : BaseController
+    public class BaseController : Controller
     {
-        public HomeController(VocabularyService vocabularyService)
-            : base(vocabularyService)
+        public BaseController(VocabularyService vocabularyService)
         {
+            this.VocabularyService = vocabularyService;
+            this.SchemeList = this.GetSchemeList();
         }
 
-        [HttpGet]
-        public ActionResult Index()
+        protected VocabularyService VocabularyService { get; set; }
+
+        protected SelectList SchemeList { get; set; }
+
+        private SelectList GetSchemeList()
         {
-            this.ViewData["SchemeList"] = this.SchemeList;
-            return this.View();
+            var sparql = @"
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+
+CONSTRUCT {
+    ?scheme
+        skos:prefLabel ?label ;
+    .
+}
+WHERE {
+    ?scheme
+        a skos:ConceptScheme ;
+        skos:prefLabel ?prefLabel ;
+    .
+
+    BIND(STR(?prefLabel) AS ?label)
+}
+";
+            var result = this.VocabularyService.Execute(sparql);
+            var lst = result.Triples.Select(x => new { (x.Subject as UriNode).Uri.AbsoluteUri, (x.Object as LiteralNode).Value })
+                .Distinct()
+                .ToList();
+            lst.Insert(0, new { AbsoluteUri = "-1", Value = "All schemes" });
+            return new SelectList(lst.OrderBy(i => i.Value), "AbsoluteUri", "Value");
         }
     }
 }

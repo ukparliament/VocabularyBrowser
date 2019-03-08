@@ -17,13 +17,11 @@ namespace VocabularyBrowser
     using VDS.RDF;
 
     [Route("vocabulary/browser/schemes")]
-    public class ConceptSchemeController : Controller
+    public class ConceptSchemeController : BaseController
     {
-        private readonly VocabularyService vocabularyService;
-
         public ConceptSchemeController(VocabularyService vocabularyService)
+            :base(vocabularyService)
         {
-            this.vocabularyService = vocabularyService;
         }
 
         [HttpGet]
@@ -48,7 +46,8 @@ WHERE {
 }
 ";
 
-            return this.View(new Skos(this.vocabularyService.Execute(sparql)));
+            this.ViewData["SchemeList"] = this.SchemeList;
+            return this.View(new Skos(this.VocabularyService.Execute(sparql)));
         }
 
         [HttpGet("{id}")]
@@ -88,7 +87,8 @@ WHERE {
 }
 ";
 
-            var graph = new Skos(this.vocabularyService.Execute(sparql, new Uri(Program.BaseUri, id)));
+            var graph = new Skos(this.VocabularyService.Execute(sparql, new Uri(Program.BaseUri, id)));
+            this.ViewData["SchemeList"] = this.SchemeList;
             return this.View(graph.ConceptSchemes.Single(cs => cs.Id == id));
         }
 
@@ -143,7 +143,7 @@ WHERE {
 }
 ";
 
-            var g = new Skos(this.vocabularyService.Execute(sparql, new Uri(Program.BaseUri, id)));
+            var g = new Skos(this.VocabularyService.Execute(sparql, new Uri(Program.BaseUri, id)));
 
             foreach (var scheme in g.ConceptSchemes)
             {
@@ -153,6 +153,7 @@ WHERE {
                 }
             }
 
+            this.ViewData["SchemeList"] = this.SchemeList;
             return this.View(g.ConceptSchemes.Single(cs => cs.Id == id));
         }
 

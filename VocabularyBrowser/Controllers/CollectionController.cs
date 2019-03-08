@@ -15,13 +15,11 @@ namespace VocabularyBrowser
     using Microsoft.AspNetCore.Mvc;
 
     [Route("vocabulary/browser/collections")]
-    public class CollectionController : Controller
+    public class CollectionController : BaseController
     {
-        private readonly VocabularyService vocabularyService;
-
         public CollectionController(VocabularyService vocabularyService)
+            : base(vocabularyService)
         {
-            this.vocabularyService = vocabularyService;
         }
 
         [HttpGet]
@@ -47,7 +45,8 @@ WHERE {
 }
 ";
 
-            return this.View(new Skos(this.vocabularyService.Execute(sparql)));
+            this.ViewData["SchemeList"] = this.SchemeList;
+            return this.View(new Skos(this.VocabularyService.Execute(sparql)));
         }
 
         [HttpGet("{id}")]
@@ -123,14 +122,14 @@ WHERE {
 }
 ";
 
-            var skos = new Skos(this.vocabularyService.Execute(sparql, new Uri(Program.BaseUri, id)));
+            var skos = new Skos(this.VocabularyService.Execute(sparql, new Uri(Program.BaseUri, id)));
             var collection = skos.Collections.SingleOrDefault(c => c.Id == id);
 
             if (collection is null)
             {
                 return NotFound();
             }
-
+            this.ViewData["SchemeList"] = this.SchemeList;
             return View(collection);
         }
     }
