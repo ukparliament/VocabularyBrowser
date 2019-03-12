@@ -19,5 +19,13 @@ namespace VocabularyBrowser
         public ConceptScheme(INode node) : base(node) { }
 
         public ICollection<Concept> HasTopConcept => new DynamicObjectCollection<Concept>(this, "hasTopConcept");
+
+        public ICollection<string> EditorialNote => new DynamicObjectCollection<string>(this, "editorialNote");
+
+        public ICollection<string> Notation => new DynamicObjectCollection<string>(this, "notation");
+
+        public ICollection<string> Definition => new DynamicObjectCollection<string>(this, "definition");
+
+        public ICollection<string> ScopeNote => new DynamicObjectCollection<string>(this, "scopeNote");
     }
 }

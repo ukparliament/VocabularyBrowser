@@ -121,7 +121,7 @@
     <value>Child collections</value>
   </data>
   <data name="MemberConcepts" xml:space="preserve">
-    <value>Concepts</value>
+    <value>Member</value>
   </data>
   <data name="Parents" xml:space="preserve">
     <value />

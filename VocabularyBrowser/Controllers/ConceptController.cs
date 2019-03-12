@@ -117,11 +117,15 @@ CONSTRUCT {
         skos:prefLabel ?conceptLabel ;
         skos:altLabel ?altLabel ;
         skos:definition ?definition ;
+        skos:editorialNote ?editorialNote ;
         skos:historyNote ?historyNote ;
         skos:notation ?notation ;
         skos:narrower ?narrower ;
         skos:broader ?broader ;
         skos:inScheme ?scheme ;
+        skos:topConceptOf ?topConceptOf;
+        skos:scopeNote ?scopeNote;
+        skos:related ?related
     .
 
     ?narrower
@@ -161,8 +165,12 @@ WHERE {
         BIND(STR(?conceptAltLabel) AS ?altLabel)
     }
     OPTIONAL { ?concept skos:definition ?definition . }
+    OPTIONAL { ?concept skos:editorialNote ?editorialNote . }
     OPTIONAL { ?concept skos:historyNote ?historyNote . }
     OPTIONAL { ?concept skos:notation ?notation . }
+    OPTIONAL { ?concept skos:topConceptOf ?topConceptOf . }
+    OPTIONAL { ?concept skos:scopeNote ?scopeNote . }
+    OPTIONAL { ?concept skos:related ?related . }
 
     OPTIONAL {
         ?narrower

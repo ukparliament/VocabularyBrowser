@@ -45,6 +45,18 @@
                 </ul>
             </details>
         }
+        @if (Model.EditorialNote.Any())
+        {
+            <details>
+                <summary>@Localizer["EditorialNote"]</summary>
+                <ul>
+                    @foreach (var editorialNote in Model.EditorialNote.OrderBy(x => x))
+                    {
+                        <li>@editorialNote</li>
+                    }
+                </ul>
+            </details>
+        }
         @if (Model.HistoryNote.Any())
         {
             <details>
@@ -53,6 +65,42 @@
                     @foreach (var historyNote in Model.HistoryNote.OrderBy(x => x))
                     {
                         <li>@historyNote</li>
+                    }
+                </ul>
+            </details>
+        }
+        @if (Model.TopConceptOf.Any())
+        {
+            <details>
+                <summary>@Localizer["TopConceptOf"]</summary>
+                <ul>
+                    @foreach (var scheme in Model.TopConceptOf.OrderBy(x => x))
+                    {
+                        <a asp-action="Item" asp-controller="ConceptScheme" asp-route-id="@scheme.Id">@scheme.PrefLabel.Single()</a>
+                    }
+                </ul>
+            </details>
+        }
+        @if (Model.ScopeNote.Any())
+        {
+            <details>
+                <summary>@Localizer["ScopeNote"]</summary>
+                <ul>
+                    @foreach (var scopeNote in Model.ScopeNote.OrderBy(x => x))
+                    {
+                        <li>@scopeNote</li>
+                    }
+                </ul>
+            </details>
+        }
+        @if (Model.Related.Any())
+        {
+            <details>
+                <summary>@Localizer["Related"]</summary>
+                <ul>
+                    @foreach (var related in Model.Related.OrderBy(x => x))
+                    {
+                        <li>@related</li>
                     }
                 </ul>
             </details>
@@ -78,20 +126,6 @@
                     {
                         <li>
                             <a asp-action="Item" asp-controller="ConceptScheme" asp-route-id="@scheme.Id">@scheme.PrefLabel.Single()</a>
-                        </li>
-                    }
-                </ul>
-            </details>
-        }
-        @if (Model.Parent.Any())
-        {
-            <details>
-                <summary>@Localizer["Parent"]</summary>
-                <ul>
-                    @foreach (var parent in Model.Parent.OrderBy(x => x.PrefLabel.Single()))
-                    {
-                        <li>
-                            <a asp-action="Item" asp-controller="Collection" asp-route-id="@parent.Id">@parent.PrefLabel.Single()</a>
                         </li>
                     }
                 </ul>
@@ -126,4 +160,18 @@
             </details>
         }
     </div>
+    @if (Model.Parent.Any())
+    {
+        <div class="container">
+            <h2>@Localizer["Collection"]</h2>
+            <ul>
+                @foreach (var parent in Model.Parent.OrderBy(x => x.PrefLabel.Single()))
+                {
+                    <li>
+                        <a asp-action="Item" asp-controller="Collection" asp-route-id="@parent.Id">@parent.PrefLabel.Single()</a>
+                    </li>
+                }
+            </ul>
+        </div>
+    }
 </section>

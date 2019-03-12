@@ -62,6 +62,10 @@ CONSTRUCT {
         a skos:ConceptScheme ;
         skos:prefLabel ?schemeLabel ;
         skos:hasTopConcept ?concept ;
+        skos:editorialNote ?editorialNote ;
+        skos:notation ?notation ;
+        skos:definition ?definition ;
+        skos:scopeNote ?scopeNote
     .
 
     ?concept
@@ -84,6 +88,11 @@ WHERE {
 
     BIND(STR(?schemePrefLabel) AS ?schemeLabel)
     BIND(STR(?conceptPrefLabel) AS ?conceptLabel)
+
+    OPTIONAL { ?scheme skos:definition ?definition . }
+    OPTIONAL { ?scheme skos:editorialNote ?editorialNote . }
+    OPTIONAL { ?scheme skos:notation ?notation . }
+    OPTIONAL { ?scheme skos:scopeNote ?scopeNote . }
 }
 ";
 

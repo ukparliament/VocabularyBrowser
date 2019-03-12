@@ -21,20 +21,75 @@
 
 <section id="content">
     <div class="container">
-        <h2>@Localizer["TopConcepts"]</h2>
-        <ol class="list--block">
-            @foreach (var concept in Model.HasTopConcept.OrderBy(x => x.PrefLabel.Single()))
-            {
-                <li>
-                    <div class="card">
-                        <div class="card__details">
-                            <h2>
-                                <a asp-action="Item" asp-controller="Concept" asp-route-id="@concept.Id">@concept.PrefLabel.Single()</a>
-                            </h2>
-                        </div>
-                    </div>
-                </li>
-            }
-        </ol>
+        <h2>@Localizer["Properties"]</h2>
+        @if (Model.Definition.Any())
+        {
+            <details>
+                <summary>@Localizer["Definition"]</summary>
+                <ul>
+                    @foreach (var definition in Model.Definition.OrderBy(x => x))
+                    {
+                        <li>@definition</li>
+                    }
+                </ul>
+            </details>
+        }
+        @if (Model.EditorialNote.Any())
+        {
+            <details>
+                <summary>@Localizer["EditorialNote"]</summary>
+                <ul>
+                    @foreach (var editorialNote in Model.EditorialNote.OrderBy(x => x))
+                    {
+                        <li>@editorialNote</li>
+                    }
+                </ul>
+            </details>
+        }
+        @if (Model.ScopeNote.Any())
+        {
+            <details>
+                <summary>@Localizer["ScopeNote"]</summary>
+                <ul>
+                    @foreach (var scopeNote in Model.ScopeNote.OrderBy(x => x))
+                    {
+                        <li>@scopeNote</li>
+                    }
+                </ul>
+            </details>
+        }
+        @if (Model.Notation.Any())
+        {
+            <details>
+                <summary>@Localizer["Notation"]</summary>
+                <ul>
+                    @foreach (var notation in Model.Notation.OrderBy(x => x))
+                    {
+                        <li>@notation</li>
+                    }
+                </ul>
+            </details>
+        }
+
+        @if (Model.HasTopConcept.Any())
+        {
+            <details>
+                <summary>@Localizer["TopConcepts"]</summary>
+                <ol class="list--block">
+                    @foreach (var concept in Model.HasTopConcept.OrderBy(x => x.PrefLabel.Single()))
+                    {
+                        <li>
+                            <div class="card">
+                                <div class="card__details">
+                                    <h2>
+                                        <a asp-action="Item" asp-controller="Concept" asp-route-id="@concept.Id">@concept.PrefLabel.Single()</a>
+                                    </h2>
+                                </div>
+                            </div>
+                        </li>
+                    }
+                </ol>
+            </details>
+        }
     </div>
 </section>

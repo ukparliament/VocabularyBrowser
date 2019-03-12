@@ -22,7 +22,15 @@ namespace VocabularyBrowser
 
         public ICollection<string> Definition => new DynamicObjectCollection<string>(this, "definition");
 
+        public ICollection<string> EditorialNote => new DynamicObjectCollection<string>(this, "editorialNote");
+
         public ICollection<string> HistoryNote => new DynamicObjectCollection<string>(this, "historyNote");
+
+        public ICollection<ConceptScheme> TopConceptOf => new DynamicObjectCollection<ConceptScheme>(this, "topConceptOf");
+
+        public ICollection<string> ScopeNote => new DynamicObjectCollection<string>(this, "scopeNote");
+
+        public ICollection<string> Related => new DynamicObjectCollection<string>(this, "related");
 
         public ICollection<string> Notation => new DynamicObjectCollection<string>(this, "notation");
 

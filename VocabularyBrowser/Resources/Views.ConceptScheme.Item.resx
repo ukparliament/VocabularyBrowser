@@ -121,7 +121,7 @@
     <value>Concept scheme</value>
   </data>
   <data name="TopConcepts" xml:space="preserve">
-    <value>Top concepts</value>
+    <value>Has top concept</value>
   </data>
   <data name="Title" xml:space="preserve">
     <value>{0} - {1}</value>
@@ -131,5 +131,17 @@
   </data>
   <data name="Presentations" xml:space="preserve">
     <value>Alternative view</value>
+  </data>
+  <data name="Definition" xml:space="preserve">
+    <value>Definition</value>
+  </data>
+  <data name="EditorialNote" xml:space="preserve">
+    <value>Editorial note</value>
+  </data>
+  <data name="Notation" xml:space="preserve">
+    <value>Notation</value>
+  </data>
+  <data name="ScopeNote" xml:space="preserve">
+    <value>Scope note</value>
   </data>
 </root>
