@@ -75,20 +75,14 @@
         {
             <details>
                 <summary>@Localizer["TopConcepts"]</summary>
-                <ol class="list--block">
+                <ul>
                     @foreach (var concept in Model.HasTopConcept.OrderBy(x => x.PrefLabel.Single()))
                     {
                         <li>
-                            <div class="card">
-                                <div class="card__details">
-                                    <h2>
-                                        <a asp-action="Item" asp-controller="Concept" asp-route-id="@concept.Id">@concept.PrefLabel.Single()</a>
-                                    </h2>
-                                </div>
-                            </div>
+                            <a asp-action="Item" asp-controller="Concept" asp-route-id="@concept.Id">@concept.PrefLabel.Single()</a>
                         </li>
                     }
-                </ol>
+                </ul>
             </details>
         }
     </div>

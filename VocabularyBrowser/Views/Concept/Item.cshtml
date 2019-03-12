@@ -76,7 +76,9 @@
                 <ul>
                     @foreach (var scheme in Model.TopConceptOf.OrderBy(x => x))
                     {
+                    <li>
                         <a asp-action="Item" asp-controller="ConceptScheme" asp-route-id="@scheme.Id">@scheme.PrefLabel.Single()</a>
+                    </li>
                     }
                 </ul>
             </details>
