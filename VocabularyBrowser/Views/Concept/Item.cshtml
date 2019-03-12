@@ -76,9 +76,9 @@
                 <ul>
                     @foreach (var scheme in Model.TopConceptOf.OrderBy(x => x))
                     {
-                    <li>
-                        <a asp-action="Item" asp-controller="ConceptScheme" asp-route-id="@scheme.Id">@scheme.PrefLabel.Single()</a>
-                    </li>
+                        <li>
+                            <a asp-action="Item" asp-controller="ConceptScheme" asp-route-id="@scheme.Id">@scheme.PrefLabel.Single()</a>
+                        </li>
                     }
                 </ul>
             </details>
@@ -91,18 +91,6 @@
                     @foreach (var scopeNote in Model.ScopeNote.OrderBy(x => x))
                     {
                         <li>@scopeNote</li>
-                    }
-                </ul>
-            </details>
-        }
-        @if (Model.Related.Any())
-        {
-            <details>
-                <summary>@Localizer["Related"]</summary>
-                <ul>
-                    @foreach (var related in Model.Related.OrderBy(x => x))
-                    {
-                        <li>@related</li>
                     }
                 </ul>
             </details>
@@ -157,6 +145,20 @@
                         <li>
                             <a asp-action="Item" asp-route-id="@narrower.Id">@narrower.PrefLabel.Single()</a>
                         </li>
+                    }
+                </ul>
+            </details>
+        }
+        @if (Model.Related.Any())
+        {
+            <details>
+                <summary>@Localizer["Related"]</summary>
+                <ul>
+                    @foreach (var related in Model.Related.OrderBy(x => x.PrefLabel.Single()))
+                    {
+                    <li>
+                        <a asp-action="Item" asp-route-id="@related.Id">@related.PrefLabel.Single()</a>
+                    </li>
                     }
                 </ul>
             </details>

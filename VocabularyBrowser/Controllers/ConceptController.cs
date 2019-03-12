@@ -125,37 +125,35 @@ CONSTRUCT {
         skos:inScheme ?scheme ;
         skos:topConceptOf ?topConceptOf;
         skos:scopeNote ?scopeNote;
-        skos:related ?related
-    .
+        skos:related ?related .
 
     ?narrower
         a skos:Concept ;
-        skos:prefLabel ?narrowerLabel ;
-    .
+        skos:prefLabel ?narrowerLabel .
 
     ?broader
         a skos:Concept ;
-        skos:prefLabel ?broaderLabel ;
-    .
+        skos:prefLabel ?broaderLabel .
+
+    ?related
+        a skos:Concept ;
+        skos:prefLabel ?relatedLabel .
 
     ?scheme
         a skos:ConceptScheme ;
-        skos:prefLabel ?schemeLabel ;
-    .
+        skos:prefLabel ?schemeLabel .
 
     ?parent
         a skos:Collection ;
         skos:member ?concept ;
-        skos:prefLabel ?parentLabel ;
-    .
+        skos:prefLabel ?parentLabel .
 }
 WHERE {
     BIND(@parameter AS ?concept)
 
     ?concept
         a skos:Concept ;
-        skos:prefLabel ?conceptPrefLabel ;
-    .
+        skos:prefLabel ?conceptPrefLabel .
 
     BIND(STR(?conceptPrefLabel) AS ?conceptLabel)
 
@@ -170,13 +168,11 @@ WHERE {
     OPTIONAL { ?concept skos:notation ?notation . }
     OPTIONAL { ?concept skos:topConceptOf ?topConceptOf . }
     OPTIONAL { ?concept skos:scopeNote ?scopeNote . }
-    OPTIONAL { ?concept skos:related ?related . }
 
     OPTIONAL {
         ?narrower
             ^skos:narrower ?concept ;
-            skos:prefLabel ?narrowerPrefLabel ;
-        .
+            skos:prefLabel ?narrowerPrefLabel .
 
         BIND(STR(?narrowerPrefLabel) AS ?narrowerLabel)
     }
@@ -184,17 +180,23 @@ WHERE {
     OPTIONAL {
         ?broader
             ^skos:broader ?concept ;
-            skos:prefLabel ?broaderPrefLabel ;
-        .
+            skos:prefLabel ?broaderPrefLabel .
 
         BIND(STR(?broaderPrefLabel) AS ?broaderLabel)
     }
 
     OPTIONAL {
+        ?related
+            ^skos:related ?concept ;
+            skos:prefLabel ?relatedPrefLabel .
+
+        BIND(STR(?relatedPrefLabel) AS ?relatedLabel)
+    }
+
+    OPTIONAL {
         ?scheme
             ^skos:inScheme ?concept ;
-            skos:prefLabel ?schemePrefLabel ;
-        .
+            skos:prefLabel ?schemePrefLabel .
 
         BIND(STR(?schemePrefLabel) AS ?schemeLabel)
     }
@@ -202,8 +204,7 @@ WHERE {
     OPTIONAL {
         ?parent
             skos:member ?concept ;
-            skos:prefLabel ?parentPrefLabel ;
-        .
+            skos:prefLabel ?parentPrefLabel .
 
         BIND(STR(?parentPrefLabel) AS ?parentLabel)
     }

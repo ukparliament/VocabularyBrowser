@@ -30,8 +30,6 @@ namespace VocabularyBrowser
 
         public ICollection<string> ScopeNote => new DynamicObjectCollection<string>(this, "scopeNote");
 
-        public ICollection<string> Related => new DynamicObjectCollection<string>(this, "related");
-
         public ICollection<string> Notation => new DynamicObjectCollection<string>(this, "notation");
 
         public ICollection<ConceptScheme> InScheme => new DynamicObjectCollection<ConceptScheme>(this, "inScheme");
@@ -41,5 +39,7 @@ namespace VocabularyBrowser
         public ICollection<Concept> Narrower => new DynamicObjectCollection<Concept>(this, "narrower");
 
         public ICollection<Concept> Broader => new DynamicObjectCollection<Concept>(this, "broader");
+
+        public ICollection<Concept> Related => new DynamicObjectCollection<Concept>(this, "related");
     }
 }
