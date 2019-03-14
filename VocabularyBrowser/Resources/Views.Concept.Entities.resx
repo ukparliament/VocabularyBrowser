@@ -121,7 +121,7 @@
     <value>Details</value>
   </data>
   <data name="Entities" xml:space="preserve">
-    <value>Entities</value>
+    <value>Tagged entities</value>
   </data>
   <data name="SubTitle" xml:space="preserve">
     <value>Concept</value>

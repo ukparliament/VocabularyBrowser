@@ -133,7 +133,7 @@
     <value>Editorial note</value>
   </data>
   <data name="Entities" xml:space="preserve">
-    <value>Entities</value>
+    <value>Tagged entities</value>
   </data>
   <data name="HistoryNote" xml:space="preserve">
     <value>History note</value>
@@ -148,7 +148,7 @@
     <value>Notation</value>
   </data>
   <data name="Properties" xml:space="preserve">
-    <value>Properties</value>
+    <value>Property</value>
   </data>
   <data name="Related" xml:space="preserve">
     <value>Related</value>
