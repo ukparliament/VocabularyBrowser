@@ -124,7 +124,7 @@
     <value>Broader</value>
   </data>
   <data name="Collection" xml:space="preserve">
-    <value>Collection</value>
+    <value>Collections</value>
   </data>
   <data name="Definition" xml:space="preserve">
     <value>Definition</value>
@@ -148,7 +148,7 @@
     <value>Notation</value>
   </data>
   <data name="Properties" xml:space="preserve">
-    <value>Property</value>
+    <value>Properties</value>
   </data>
   <data name="Related" xml:space="preserve">
     <value>Related</value>
