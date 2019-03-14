@@ -5,5 +5,41 @@
 <div class="hero">
     <div class="container">
         <h1>@Localizer["Title"]</h1>
+        <!-- TODO add contact to raise issues -->
+        <p>The UK Parliament controlled vocabulary is maintained by our Indexing and Data Management Section (IDMS).</p>
+        <p>Our vocabulary is defined using the Simple Knowledge Organization System (SKOS) data model. SKOS is a <a href="https://en.wikipedia.org/wiki/World_Wide_Web_Consortium">W3C</a> standard establishing a common data model for thesauri, taxonomies, classification schemes and subject heading systems. It enables data and technology sharing across diverse applications.</p>
+        <p>An introduction to SKOS is available in the <a href="https://www.w3.org/TR/skos-primer/">SKOS primer W3C working group note</a>.</p>
+        <p>The full SKOS specification is available in the <a href="https://www.w3.org/TR/skos-reference/">SKOS reference W3C recommendation</a>.</p>
     </div>
 </div>
+<section class="section--major section--wide ">
+    <div class="container">
+        <h2>SKOS Classes</h2>
+        <ol class="list--block list--3 ">
+            <li>
+                <div class="card">
+                    <div class="card__details">
+                        <h3><a asp-action="Index" asp-controller="ConceptScheme">@Localizer["ConceptScheme"].Value</a></h3>
+                        <p>A SKOS concept scheme can be viewed as an aggregation of one or more SKOS concepts.</p>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="card">
+                    <div class="card__details">
+                        <h3><a asp-action="Index" asp-controller="Collection">@Localizer["Collection"].Value</a></h3>
+                        <p>SKOS concept collections are labeled and/or ordered groups of SKOS concepts.</p>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="card">
+                    <div class="card__details">
+                        <h3><a asp-action="Index" asp-controller="Concept">@Localizer["Concept"].Value</a></h3>
+                        <p>A SKOS concept can be viewed as an idea or notion; a unit of thought.</p>
+                    </div>
+                </div>
+            </li>
+        </ol>
+    </div>
+</section>

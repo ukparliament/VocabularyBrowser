@@ -46,7 +46,6 @@ WHERE {
 }
 ";
 
-            this.ViewData["SchemeList"] = this.SchemeList;
             return this.View(new Skos(this.VocabularyService.Execute(sparql)));
         }
 
@@ -97,7 +96,7 @@ WHERE {
 ";
 
             var graph = new Skos(this.VocabularyService.Execute(sparql, new Uri(Program.BaseUri, id)));
-            this.ViewData["SchemeList"] = this.SchemeList;
+
             return this.View(graph.ConceptSchemes.Single(cs => cs.Id == id));
         }
 
@@ -162,7 +161,6 @@ WHERE {
                 }
             }
 
-            this.ViewData["SchemeList"] = this.SchemeList;
             return this.View(g.ConceptSchemes.Single(cs => cs.Id == id));
         }
 

@@ -6,18 +6,21 @@
     ViewData["Title"] = Localizer["Title", subTitle, label];
 }
 
-<div class="section--primary">
+<div class="section--primary" tabindex="0" id="content">
     <div class="container">
-        <small>@subTitle</small>
-        <h1>@label</h1>
-        <dl class="meta">
-            <dt>@Localizer["ConceptScheme"]</dt>
-            <dd>
-                <a asp-action="Item">@Localizer["Details"].Value</a>
-            </dd>
-        </dl>
+        <small><a asp-action="Index" asp-controller="ConceptScheme">@subTitle</a></small>
+        <h1><span>@label</span></h1>
     </div>
 </div>
+
+<section>
+    <div class="container">
+        <ul class="list--tab">
+            <li><a asp-action="Item">@Localizer["Details"].Value</a></li>
+            <li class="active">Tree</li>
+        </ul>
+    </div>
+</section>
 
 <section id="content">
     <div class="container">

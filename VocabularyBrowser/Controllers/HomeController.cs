@@ -23,7 +23,6 @@ namespace VocabularyBrowser
         [HttpGet]
         public ActionResult Index()
         {
-            this.ViewData["SchemeList"] = this.SchemeList;
             return this.View();
         }
     }

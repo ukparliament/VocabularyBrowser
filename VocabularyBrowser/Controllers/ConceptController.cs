@@ -54,7 +54,6 @@ WHERE {
     }
 }
 ";
-            this.ViewData["SchemeList"] = this.SchemeList;
             return this.View(new DynamicGraph(this.VocabularyService.Execute(sparql), new Uri("urn:")));
         }
 
@@ -99,7 +98,7 @@ WHERE {
             pp.SetLiteral("prefix", prefix);
 
             this.ViewData["prefix"] = prefix;
-            this.ViewData["SchemeList"] = this.SchemeList;
+
             return this.View(new Skos(this.VocabularyService.Execute(pp), new Uri("urn:")));
         }
 
@@ -212,7 +211,7 @@ WHERE {
 ";
 
             var graph = new Skos(this.VocabularyService.Execute(sparql, new Uri(Program.BaseUri, id)));
-            this.ViewData["SchemeList"] = this.SchemeList;
+
             return this.View(graph.Concepts.Single(c => c.Id == id));
         }
 
@@ -245,7 +244,7 @@ WHERE {
 
             this.ViewData["label"] = GetConcepts(new[] { id }).Concepts.Single().PrefLabel.Single();
             this.ViewData["id"] = id;
-            this.ViewData["SchemeList"] = this.SchemeList;
+
             return this.View(results);
         }
 

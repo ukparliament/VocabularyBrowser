@@ -1,21 +1,42 @@
 ﻿@{
-    var query = ViewData["Query"];
-    ViewData["Title"] = Localizer["Title", Localizer["SubTitle"], query];
+    ViewData["Title"] = Localizer["Title", Localizer["SubTitle"], Model.SearchText];
 }
+@model VocabularyBrowser.Models.SearchQuery
 
 <div class="section--primary">
     <div class="container">
-        <small>@Localizer["SubTitle"]</small>
-        <h1>@query</h1>
+        <h1>@Localizer["SubTitle"]</h1>
+        <form method="post" asp-action="Query" asp-controller="Search" asp-antiforgery="false">
+            <fieldset>
+                <div class="input-group">
+                    <label class="sr-only" for="search_box">query</label>
+                    <input asp-for="@Model.SearchText" id="search_box" maxlength="1000" pattern="^(?!.*<script|<Script).*$" aria-label="enter a search term" autocomplete="off" required="" type="search">
+                    <button class="btn--white" type="submit">
+                        <svg data-icon="search" height="20" viewBox="0 0 20 20" width="20" xmlns="http://www.w3.org/2000/svg"><title>Search icon</title><g fill="#fff"><path d="M7.5 15C3.4 15 0 11.6 0 7.5 0 3.4 3.4 0 7.5 0 11.6 0 15 3.4 15 7.5 15 11.6 11.6 15 7.5 15ZM7.5 13C10.5 13 13 10.5 13 7.5 13 4.5 10.5 2 7.5 2 4.5 2 2 4.5 2 7.5 2 10.5 4.5 13 7.5 13Z"></path><polygon points="14.8 10.8 16.8 10.8 16.8 20.8 14.8 20.8" transform="translate(15.778175 15.778175)rotate(-45)translate(-15.778175 -15.778175)"></polygon></g></svg>
+                    </button>
+                </div>
+                <div>
+                    <select asp-for="@Model.ConceptScheme" id="concept_scheme" asp-items="@Model.ConceptSchemeList"></select>
+                </div>
+                <div>
+                    <input type="checkbox" id="exact_match" asp-for="@Model.ExactMatch" />
+                    <label for="exact_match">Exact match</label>
+                </div>
+            </fieldset>
+        </form>
     </div>
 </div>
 
 <section id="content">
     <div class="container">
+        <div asp-validation-summary="All" class="message--error"></div>
 
-        @if (Model.TryGetValue("result", out dynamic results))
+        @if (Model.Results != null && Model.Results.TryGetValue("result", out dynamic results))
         {
             var mapping = new Dictionary<string, string> { { "http://www.w3.org/2004/02/skos/core#Concept", "Concept" }, { "http://www.w3.org/2004/02/skos/core#ConceptScheme", "ConceptScheme" }, { "http://www.w3.org/2004/02/skos/core#Collection", "Collection" } };
+
+
+            <h2><span>About @results.member.Count() results</span></h2>
 
             <ol class="list--block">
                 @foreach (var result in results.member.OrderByDescending((Func<dynamic, dynamic>)(x => x.score.Single())))
@@ -33,15 +54,15 @@
                                     </li>
                                     @foreach (var collection in result.collection)
                                     {
-                                    <li>
-                                        <a asp-action="Item" asp-controller="Collection"  asp-route-id="@(new SkosResource(collection).Id)" class="hint theme--grey-4">collection: @collection.label.Single()</a>
-                                    </li>
+                                        <li>
+                                            <a asp-action="Item" asp-controller="Collection" asp-route-id="@(new SkosResource(collection).Id)" class="hint theme--grey-4">collection: @collection.label.Single()</a>
+                                        </li>
                                     }
                                     @foreach (var scheme in result.scheme)
                                     {
-                                    <li>
-                                        <a asp-action="Item" asp-controller="ConceptScheme" asp-route-id="@(new SkosResource(scheme).Id)" class="hint theme--grey-4">scheme: @scheme.label.Single()</a>
-                                    </li>
+                                        <li>
+                                            <a asp-action="Item" asp-controller="ConceptScheme" asp-route-id="@(new SkosResource(scheme).Id)" class="hint theme--grey-4">scheme: @scheme.label.Single()</a>
+                                        </li>
                                     }
                                 </ul>
                             </div>
@@ -52,7 +73,7 @@
         }
         else
         {
-            <span>no results</span>
+            <h2><span>No results</span></h2>
         }
     </div>
 </section>

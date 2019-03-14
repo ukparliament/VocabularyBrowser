@@ -44,8 +44,6 @@ WHERE {
     BIND(STR(?prefLabel) AS ?label)
 }
 ";
-
-            this.ViewData["SchemeList"] = this.SchemeList;
             return this.View(new Skos(this.VocabularyService.Execute(sparql)));
         }
 
@@ -129,7 +127,7 @@ WHERE {
             {
                 return NotFound();
             }
-            this.ViewData["SchemeList"] = this.SchemeList;
+
             return View(collection);
         }
     }

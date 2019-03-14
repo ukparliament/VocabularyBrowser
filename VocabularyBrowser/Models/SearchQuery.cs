@@ -8,6 +8,9 @@
 //
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+using Microsoft.AspNetCore.Mvc.Rendering;
+using VDS.RDF.Dynamic;
+
 namespace VocabularyBrowser.Models
 {
     public class SearchQuery
@@ -15,5 +18,7 @@ namespace VocabularyBrowser.Models
         public string SearchText { get; set; }
         public bool ExactMatch { get; set; }
         public string ConceptScheme { get; set; }
+        public SelectList ConceptSchemeList { get; set; }
+        public DynamicGraph Results { get; set; }
     }
 }

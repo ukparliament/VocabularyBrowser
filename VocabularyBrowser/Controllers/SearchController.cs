@@ -11,8 +11,11 @@
 namespace VocabularyBrowser
 {
     using System;
+    using System.Linq;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Mvc.Rendering;
     using Microsoft.Extensions.Configuration;
+    using VDS.RDF;
     using VDS.RDF.Dynamic;
     using VDS.RDF.Query;
     using VocabularyBrowser.Models;
@@ -28,16 +31,23 @@ namespace VocabularyBrowser
 
         protected string LuceneConnector { get; set; }
 
+        [HttpGet]
+        public ActionResult Query(string searchText)
+        {
+            return Query(new SearchQuery() { SearchText = searchText });
+        }
+
         [HttpPost]
         public ActionResult Query(SearchQuery searchQuery)
         {
-            // TODO: When this query has no result,
-            // an empty graph is returned.
-            // Newer version of GraphDB send no content type header.
-            // dotnetrdf fails to find a parser for a response without content type.
-            // Quick fix is to always have something in the result graph.
-            // Or to add a default header.
-            // Fix is to modify dnr parser selection.
+            searchQuery.ConceptSchemeList = GetSchemeList();
+
+            if (string.IsNullOrWhiteSpace(searchQuery.SearchText))
+            {
+                ModelState.AddModelError(string.Empty, "search text is required");
+                return View(searchQuery);
+            }
+
             string sparqlFilter = string.Empty;
             if (searchQuery.ExactMatch)
             {
@@ -112,12 +122,36 @@ WHERE
             pp.SetUri("connector", connector);
             pp.SetLiteral("query", searchQuery.SearchText);
 
-            this.ViewData["Query"] = searchQuery.SearchText;
-            this.ViewData["ExactMatch"] = searchQuery.ExactMatch;
-            this.ViewData["Scheme"] = searchQuery.ConceptScheme;
-            this.ViewData["SchemeList"] = this.SchemeList;
+            searchQuery.Results = new DynamicGraph(this.VocabularyService.Execute(pp), subjectBaseUri: new Uri("urn:"));
 
-            return this.View(new DynamicGraph(this.VocabularyService.Execute(pp), subjectBaseUri: new Uri("urn:")));
+            return this.View(searchQuery);
+        }
+
+        private SelectList GetSchemeList()
+        {
+            var sparql = @"
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+
+CONSTRUCT {
+    ?scheme
+        skos:prefLabel ?label ;
+    .
+}
+WHERE {
+    ?scheme
+        a skos:ConceptScheme ;
+        skos:prefLabel ?prefLabel ;
+    .
+
+    BIND(STR(?prefLabel) AS ?label)
+}
+";
+            var result = this.VocabularyService.Execute(sparql);
+            var lst = result.Triples.Select(x => new { (x.Subject as UriNode).Uri.AbsoluteUri, (x.Object as LiteralNode).Value })
+                .Distinct()
+                .ToList();
+            lst.Insert(0, new { AbsoluteUri = "-1", Value = "All schemes" });
+            return new SelectList(lst.OrderBy(i => i.Value), "AbsoluteUri", "Value");
         }
     }
 }

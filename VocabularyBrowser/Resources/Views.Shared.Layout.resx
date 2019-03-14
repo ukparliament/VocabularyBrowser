@@ -117,15 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Collections" xml:space="preserve">
-    <value>Collections</value>
-  </data>
-  <data name="Concepts" xml:space="preserve">
-    <value>Concepts</value>
-  </data>
-  <data name="ConceptSchemes" xml:space="preserve">
-    <value>Concept schemes</value>
-  </data>
   <data name="SkipLink" xml:space="preserve">
     <value>Skip to main content</value>
   </data>

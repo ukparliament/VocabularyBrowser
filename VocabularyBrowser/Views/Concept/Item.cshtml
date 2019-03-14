@@ -33,68 +33,6 @@
                 </ul>
             </details>
         }
-        @if (Model.Definition.Any())
-        {
-            <details>
-                <summary>@Localizer["Definition"]</summary>
-                <ul>
-                    @foreach (var definition in Model.Definition.OrderBy(x => x))
-                    {
-                        <li>@definition</li>
-                    }
-                </ul>
-            </details>
-        }
-        @if (Model.EditorialNote.Any())
-        {
-            <details>
-                <summary>@Localizer["EditorialNote"]</summary>
-                <ul>
-                    @foreach (var editorialNote in Model.EditorialNote.OrderBy(x => x))
-                    {
-                        <li>@editorialNote</li>
-                    }
-                </ul>
-            </details>
-        }
-        @if (Model.HistoryNote.Any())
-        {
-            <details>
-                <summary>@Localizer["HistoryNote"]</summary>
-                <ul>
-                    @foreach (var historyNote in Model.HistoryNote.OrderBy(x => x))
-                    {
-                        <li>@historyNote</li>
-                    }
-                </ul>
-            </details>
-        }
-        @if (Model.TopConceptOf.Any())
-        {
-            <details>
-                <summary>@Localizer["TopConceptOf"]</summary>
-                <ul>
-                    @foreach (var scheme in Model.TopConceptOf.OrderBy(x => x))
-                    {
-                        <li>
-                            <a asp-action="Item" asp-controller="ConceptScheme" asp-route-id="@scheme.Id">@scheme.PrefLabel.Single()</a>
-                        </li>
-                    }
-                </ul>
-            </details>
-        }
-        @if (Model.ScopeNote.Any())
-        {
-            <details>
-                <summary>@Localizer["ScopeNote"]</summary>
-                <ul>
-                    @foreach (var scopeNote in Model.ScopeNote.OrderBy(x => x))
-                    {
-                        <li>@scopeNote</li>
-                    }
-                </ul>
-            </details>
-        }
         @if (Model.Notation.Any())
         {
             <details>
@@ -113,6 +51,20 @@
                 <summary>@Localizer["InScheme"]</summary>
                 <ul>
                     @foreach (var scheme in Model.InScheme.OrderBy(x => x.PrefLabel.Single()))
+                    {
+                        <li>
+                            <a asp-action="Item" asp-controller="ConceptScheme" asp-route-id="@scheme.Id">@scheme.PrefLabel.Single()</a>
+                        </li>
+                    }
+                </ul>
+            </details>
+        }
+        @if (Model.TopConceptOf.Any())
+        {
+            <details>
+                <summary>@Localizer["TopConceptOf"]</summary>
+                <ul>
+                    @foreach (var scheme in Model.TopConceptOf.OrderBy(x => x))
                     {
                         <li>
                             <a asp-action="Item" asp-controller="ConceptScheme" asp-route-id="@scheme.Id">@scheme.PrefLabel.Single()</a>
@@ -156,9 +108,57 @@
                 <ul>
                     @foreach (var related in Model.Related.OrderBy(x => x.PrefLabel.Single()))
                     {
-                    <li>
-                        <a asp-action="Item" asp-route-id="@related.Id">@related.PrefLabel.Single()</a>
-                    </li>
+                        <li>
+                            <a asp-action="Item" asp-route-id="@related.Id">@related.PrefLabel.Single()</a>
+                        </li>
+                    }
+                </ul>
+            </details>
+        }
+        @if (Model.ScopeNote.Any())
+        {
+            <details>
+                <summary>@Localizer["ScopeNote"]</summary>
+                <ul>
+                    @foreach (var scopeNote in Model.ScopeNote.OrderBy(x => x))
+                    {
+                        <li>@scopeNote</li>
+                    }
+                </ul>
+            </details>
+        }
+        @if (Model.Definition.Any())
+        {
+            <details>
+                <summary>@Localizer["Definition"]</summary>
+                <ul>
+                    @foreach (var definition in Model.Definition.OrderBy(x => x))
+                    {
+                        <li>@definition</li>
+                    }
+                </ul>
+            </details>
+        }
+        @if (Model.EditorialNote.Any())
+        {
+            <details>
+                <summary>@Localizer["EditorialNote"]</summary>
+                <ul>
+                    @foreach (var editorialNote in Model.EditorialNote.OrderBy(x => x))
+                    {
+                        <li>@editorialNote</li>
+                    }
+                </ul>
+            </details>
+        }
+        @if (Model.HistoryNote.Any())
+        {
+            <details>
+                <summary>@Localizer["HistoryNote"]</summary>
+                <ul>
+                    @foreach (var historyNote in Model.HistoryNote.OrderBy(x => x))
+                    {
+                        <li>@historyNote</li>
                     }
                 </ul>
             </details>
