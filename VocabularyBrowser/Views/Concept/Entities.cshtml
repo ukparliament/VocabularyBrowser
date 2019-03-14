@@ -10,14 +10,17 @@
     <div class="container">
         <small>@Localizer["SubTitle"]</small>
         <h1>@label</h1>
-        <dl class="meta">
-            <dt>Concept</dt>
-            <dd>
-                <a asp-action="Item" asp-route-id="@ViewData["id"].ToString()">@Localizer["Details"].Value</a>
-            </dd>
-        </dl>
     </div>
 </div>
+
+<section>
+    <div class="container">
+        <ul class="list--tab">
+            <li><a asp-action="Item" asp-route-id="@ViewData["id"].ToString()">@Localizer["Details"].Value</a></li>
+            <li class="active">@Localizer["Entities"].Value</li>
+        </ul>
+    </div>
+</section>
 
 <section id="content">
     <div class="container">
@@ -46,9 +49,9 @@
                             <ul class="list--inline">
                                 @foreach (var contentType in result.ContentTypes)
                                 {
-                                <li>
-                                    <a asp-action="Item" asp-controller="Concept" asp-route-id="@contentType.Id" class="hint theme--grey-4">content type: @contentType.PrefLabel.Single()</a>
-                                </li>
+                                    <li>
+                                        <a asp-action="Item" asp-controller="Concept" asp-route-id="@contentType.Id" class="hint theme--grey-4">content type: @contentType.PrefLabel.Single()</a>
+                                    </li>
                                 }
                             </ul>
                         </div>

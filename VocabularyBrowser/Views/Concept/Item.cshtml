@@ -9,14 +9,19 @@
     <div class="container">
         <small>@Localizer["SubTitle"]</small>
         <h1>@label</h1>
-        <dl class="meta">
-            <dt>Tagged</dt>
-            <dd>
-                <a asp-action="Entities" asp-route-id="@Model.Id">@Localizer["Entities"].Value</a>
-            </dd>
-        </dl>
     </div>
 </div>
+
+<section>
+    <div class="container">
+        <ul class="list--tab">
+            <li class="active">Details</li>
+            <li>
+                <a asp-action="Entities" asp-route-id="@Model.Id">@Localizer["Entities"].Value</a>
+            </li>
+        </ul>
+    </div>
+</section>
 
 <section id="content">
     <div class="container">

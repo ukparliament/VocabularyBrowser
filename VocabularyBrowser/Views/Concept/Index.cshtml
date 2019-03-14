@@ -6,6 +6,8 @@
     <div class="container">
         <small><a asp-action="Index" asp-controller="Home">@Localizer["SubTitle"]</a></small>
         <h1><span>@Localizer["Title"]</span></h1>
+        <p>Underneath is a list of the first characters of our concepts preferred labels. You can access for example a <a asp-action="StartingWith" asp-route-prefix="A">list of all concepts starting with the letter a</a>.</p>
+        <p>You might want to try the <a asp-action="Query" asp-controller="Search">vocabulary search</a> instead.</p>
         <partial name="ConceptInitials" model="Model.initials.value" />
     </div>
 </div>

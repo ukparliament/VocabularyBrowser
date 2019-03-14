@@ -32,9 +32,9 @@ namespace VocabularyBrowser
         protected string LuceneConnector { get; set; }
 
         [HttpGet]
-        public ActionResult Query(string searchText)
+        public ActionResult Query(string q)
         {
-            return Query(new SearchQuery() { SearchText = searchText });
+            return Query(new SearchQuery() { SearchText = q });
         }
 
         [HttpPost]
