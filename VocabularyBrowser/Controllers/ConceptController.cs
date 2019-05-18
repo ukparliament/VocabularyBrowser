@@ -107,6 +107,7 @@ WHERE {
         {
             var sparql = @"
 PREFIX : <urn:>
+PREFIX parl: <https://id.parliament.uk/schema/>
 PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
 
 CONSTRUCT {
@@ -119,6 +120,7 @@ CONSTRUCT {
         skos:editorialNote ?editorialNote ;
         skos:historyNote ?historyNote ;
         skos:notation ?notation ;
+        parl:sesId ?sesId ;
         skos:narrower ?narrower ;
         skos:broader ?broader ;
         skos:inScheme ?scheme ;
@@ -164,6 +166,7 @@ WHERE {
     OPTIONAL { ?concept skos:definition ?definition . }
     OPTIONAL { ?concept skos:editorialNote ?editorialNote . }
     OPTIONAL { ?concept skos:historyNote ?historyNote . }
+    OPTIONAL { ?concept parl:sesId ?sesId . }
     OPTIONAL { ?concept skos:notation ?notation . }
     OPTIONAL { ?concept skos:topConceptOf ?topConceptOf . }
     OPTIONAL { ?concept skos:scopeNote ?scopeNote . }
@@ -218,8 +221,28 @@ WHERE {
         [HttpGet("{id}/entities")]
         public async Task<ActionResult> Entities(string id)
         {
+            var sparql = @"
+PREFIX parl: <https://id.parliament.uk/schema/>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+
+CONSTRUCT {
+    ?concept
+        a skos:Concept ;
+        parl:sesId ?sesId .
+}
+WHERE {
+    BIND(@parameter AS ?concept)
+
+    ?concept a skos:Concept .
+
+    OPTIONAL { ?concept parl:sesId ?sesId . }
+}
+";
+
+            var graph = new Skos(this.VocabularyService.Execute(sparql, new Uri(Program.BaseUri, id)));
+
             var results = await this.solr.QueryAsync(
-                    $"all_ses:{id}",
+                    $"all_ses:{graph.Concepts.First().SesId.First()}",
                     new QueryOptions
                     {
                         Fields = new[] {

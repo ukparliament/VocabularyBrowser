@@ -156,6 +156,9 @@
   <data name="ScopeNote" xml:space="preserve">
     <value>Scope note</value>
   </data>
+  <data name="SesId" xml:space="preserve">
+    <value>SES ID</value>
+  </data>
   <data name="SubTitle" xml:space="preserve">
     <value>Concept</value>
   </data>

@@ -39,6 +39,18 @@
                 </ul>
             </details>
         }
+        @if (Model.SesId.Any())
+        {
+            <details>
+                <summary>SES ID</summary>
+                <ul>
+                    @foreach (var sesId in Model.SesId)
+                    {
+                        <li>@sesId</li>
+                    }
+                </ul>
+            </details>
+        }
         @if (Model.HasTopConcept.Any())
         {
             <details>

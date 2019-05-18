@@ -54,6 +54,7 @@ WHERE {
         {
             var sparql = @"
 PREFIX : <urn:>
+PREFIX parl: <https://id.parliament.uk/schema/>
 PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
 
 CONSTRUCT {
@@ -63,6 +64,7 @@ CONSTRUCT {
         skos:hasTopConcept ?concept ;
         skos:editorialNote ?editorialNote ;
         skos:notation ?notation ;
+        parl:sesId ?sesId ;
         skos:definition ?definition ;
         skos:scopeNote ?scopeNote
     .
@@ -91,6 +93,7 @@ WHERE {
     OPTIONAL { ?scheme skos:definition ?definition . }
     OPTIONAL { ?scheme skos:editorialNote ?editorialNote . }
     OPTIONAL { ?scheme skos:notation ?notation . }
+    OPTIONAL { ?scheme parl:sesId ?sesId . }
     OPTIONAL { ?scheme skos:scopeNote ?scopeNote . }
 }
 ";

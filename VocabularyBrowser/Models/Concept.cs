@@ -30,6 +30,8 @@ namespace VocabularyBrowser
 
         public ICollection<string> ScopeNote => new DynamicObjectCollection<string>(this, "scopeNote");
 
+        public ICollection<string> SesId => new DynamicObjectCollection<string>(this, "https://id.parliament.uk/schema/sesId");
+
         public ICollection<string> Notation => new DynamicObjectCollection<string>(this, "notation");
 
         public ICollection<ConceptScheme> InScheme => new DynamicObjectCollection<ConceptScheme>(this, "inScheme");

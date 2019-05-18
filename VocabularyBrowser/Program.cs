@@ -16,7 +16,7 @@ namespace VocabularyBrowser
 
     public class Program
     {
-        internal static readonly Uri BaseUri= new Uri("http://data.parliament.uk/terms/");
+        internal static readonly Uri BaseUri= new Uri("https://id.parliament.uk/");
 
         public static void Main(string[] args)
         {
