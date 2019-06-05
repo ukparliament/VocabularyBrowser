@@ -12,6 +12,8 @@ namespace VocabularyBrowser
 {
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Mvc.Formatters;
     using Microsoft.AspNetCore.Rewrite;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
@@ -32,8 +34,16 @@ namespace VocabularyBrowser
         {
             services.AddLocalization(options => options.ResourcesPath = "Resources");
             services.AddSingleton<VocabularyService>();
-            services.AddMvc().AddViewLocalization();
+            services.AddMvc(this.ConfigureMvc).AddViewLocalization();
             services.AddSolrNet(this.solrNetUrl, this.SetupSolr);
+        }
+
+        private void ConfigureMvc(MvcOptions mvcOptions)
+        {
+            mvcOptions.RespectBrowserAcceptHeader = true;
+            mvcOptions.OutputFormatters.Add(new XmlSerializerOutputFormatter());
+            mvcOptions.FormatterMappings.SetMediaTypeMappingForFormat("xml", "text/xml");
+            mvcOptions.FormatterMappings.SetMediaTypeMappingForFormat("json", "application/json");
         }
 
         private void SetupSolr(SolrNetOptions options)

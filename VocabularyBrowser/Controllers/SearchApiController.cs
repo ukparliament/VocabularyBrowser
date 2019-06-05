@@ -11,6 +11,7 @@
 namespace VocabularyBrowser
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Rendering;
@@ -20,10 +21,11 @@ namespace VocabularyBrowser
     using VDS.RDF.Query;
     using VocabularyBrowser.Models;
 
-    [Route("vocabulary/browser/search")]
-    public class SearchController : BaseController
+    [Route("vocabulary/browser/api/")]
+    [ApiController]
+    public class SearchApiController : BaseController
     {
-        public SearchController(VocabularyService vocabularyService, IConfiguration config)
+        public SearchApiController(VocabularyService vocabularyService, IConfiguration config)
             : base(vocabularyService)
         {
             this.LuceneConnector = config.GetSection("SearchController")["luceneConnector"];
@@ -31,33 +33,22 @@ namespace VocabularyBrowser
 
         protected string LuceneConnector { get; set; }
 
-        [HttpGet]
-        public ActionResult Query(string q, string scheme = null)
+        [HttpGet("search")]
+        [HttpGet("search.{format}")]
+        [FormatFilter]
+        public ActionResult<Feed> Query(string q, string scheme = null)
         {
-            return this.Query(new SearchQuery() { SearchText = q, ConceptScheme = scheme });
-        }
+            var entries = new List<Entry>();
 
-        [HttpPost]
-        public ActionResult Query(SearchQuery searchQuery)
-        {
-            searchQuery.ConceptSchemeList = this.GetSchemeList();
-
-            if (string.IsNullOrWhiteSpace(searchQuery.SearchText))
+            if (q == null || q.Length < 2)
             {
-                this.ModelState.AddModelError(string.Empty, "search text is required");
-                return this.View(searchQuery);
-            }
-
-            string sparqlFilter = string.Empty;
-            if (searchQuery.ExactMatch)
-            {
-                sparqlFilter = @"FILTER(LCASE(STR(?prefLabel)) = LCASE(@query))";
+                return new Feed() { Entries = entries };
             }
 
             string schemeBind = string.Empty;
-            if (searchQuery.ConceptScheme != null && !searchQuery.ConceptScheme.Equals("-1"))
+            if (scheme != null && !scheme.Equals("-1"))
             {
-                schemeBind = $"BIND(id:{searchQuery.ConceptScheme} as ?scheme)";
+                schemeBind = $"BIND(id:{scheme} as ?scheme)";
             }
 
             var sparql = $@"
@@ -115,7 +106,6 @@ WHERE
 
     BIND(STR(?prefLabel) AS ?label)
     BIND(STR(?schemePrefLabel) AS ?schemeLabel)
-    {sparqlFilter}
 }}
 ";
 
@@ -123,38 +113,19 @@ WHERE
 
             var pp = new SparqlParameterizedString(sparql);
             pp.SetUri("connector", connector);
-            pp.SetLiteral("query", searchQuery.SearchText);
+            pp.SetLiteral("query", q);
 
-            searchQuery.Results = new DynamicGraph(this.VocabularyService.Execute(pp), subjectBaseUri: new Uri("urn:"));
+            var graph = new DynamicGraph(this.VocabularyService.Execute(pp), subjectBaseUri: new Uri("urn:"));
 
-            return this.View(searchQuery);
-        }
+            if (graph != null && graph.TryGetValue("result", out dynamic results))
+            {
+                foreach (var entry in results.member.OrderByDescending((Func<dynamic, dynamic>)(x => x.score.Single())))
+                {
+                    entries.Add(new Entry() { Id = entry.ToString(), Title = entry.label.Single() });
+                }
+            }
 
-        private SelectList GetSchemeList()
-        {
-            var sparql = @"
-PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
-
-CONSTRUCT {
-    ?scheme
-        skos:prefLabel ?label ;
-    .
-}
-WHERE {
-    ?scheme
-        a skos:ConceptScheme ;
-        skos:prefLabel ?prefLabel ;
-    .
-
-    BIND(STR(?prefLabel) AS ?label)
-}
-";
-            var result = this.VocabularyService.Execute(sparql);
-            var lst = result.Triples.Select(x => new { AbsoluteUri = (x.Subject as UriNode).Uri.Segments.Last(), Value = (x.Object as LiteralNode).Value })
-                .Distinct()
-                .ToList();
-            lst.Insert(0, new { AbsoluteUri = "-1", Value = "All schemes" });
-            return new SelectList(lst.OrderBy(i => i.Value), "AbsoluteUri", "Value");
+            return new Feed() { Entries = entries };
         }
     }
 }
