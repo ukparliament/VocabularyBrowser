@@ -13,10 +13,10 @@ namespace VocabularyBrowser.Models
     using System.Collections.Generic;
     using System.Xml.Serialization;
 
-    [XmlRoot("Feed")]
+    [XmlRoot("feed")]
     public class Feed
     {
-        [XmlElement("Entry")]
+        [XmlElement("entry")]
         public List<Entry> Entries { get; set; }
     }
 }
