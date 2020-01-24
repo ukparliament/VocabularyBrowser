@@ -36,11 +36,11 @@ namespace VocabularyBrowser
         [HttpGet("search")]
         [HttpGet("search.{format}")]
         [FormatFilter]
-        public ActionResult<Feed> Query(string q, string scheme = null)
+        public ActionResult<Feed> Query(string q, string scheme = null, string id = null)
         {
             var entries = new List<Entry>();
 
-            if (q == null || q.Length < 2)
+            if ((q == null || q.Length < 2) && id == null)
             {
                 return new Feed() { Entries = entries };
             }
@@ -49,6 +49,12 @@ namespace VocabularyBrowser
             if (scheme != null && !scheme.Equals("-1"))
             {
                 schemeBind = $"BIND(id:{scheme} as ?scheme)";
+            }
+
+            string idBind = string.Empty;
+            if (id != null && !id.Equals("-1"))
+            {
+                idBind = $"BIND(id:{id} as ?entity)";
             }
 
             var sparql = $@"
@@ -75,6 +81,8 @@ CONSTRUCT {{
 }}
 WHERE
 {{
+    {idBind}
+    {schemeBind}
     {{
         SELECT ?entity ?score 
         WHERE {{
@@ -88,7 +96,6 @@ WHERE
         }}
     }}
 
-    {schemeBind}
     ?entity
         a skos:Concept ;
         skos:prefLabel ?prefLabel ;
@@ -113,7 +120,7 @@ WHERE
 
             var pp = new SparqlParameterizedString(sparql);
             pp.SetUri("connector", connector);
-            pp.SetLiteral("query", q);
+            pp.SetLiteral("query", q ?? string.Empty);
 
             var graph = new DynamicGraph(this.VocabularyService.Execute(pp), subjectBaseUri: new Uri("urn:"));
 
